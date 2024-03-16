@@ -7,12 +7,13 @@ import {
   VideoCameraOutlined
 } from '@ant-design/icons';
 import {Routes, Route, Navigate, Link} from 'react-router-dom';
-import {Layout, Menu, Button, theme} from 'antd';
+import {Layout, Menu, Button, theme } from 'antd';
 
 
 import Home from './pages/Home';
 import Storage from './pages/Storage';
 import Service from './pages/Service';
+import Record from './pages/Record';
 import Reports from './pages/Reports';
 
 import './styles/app.sass';
@@ -53,6 +54,11 @@ const App = () => {
             {
               key: '4',
               icon: <UploadOutlined/>,
+              label: <Link to="/record">Запись</Link>,
+            },
+            {
+              key: '5',
+              icon: <UploadOutlined/>,
               label: <Link to="/reports">Отчёты</Link>,
             },
           ]}
@@ -89,6 +95,7 @@ const App = () => {
             <Route path="/" element={<Home/>}/>
             <Route path="/storage" element={<Storage/>}/>
             <Route path="/service" element={<Service/>}/>
+            <Route path="/record" element={<Record/>}/>
             <Route path="/reports" element={<Reports/>}/>
             <Route path="*" element={<Navigate to="/" replace/>}/>
           </Routes>
