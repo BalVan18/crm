@@ -1,6 +1,4 @@
-import React from 'react'
-
-export default function Reports() {
+export default function Record() {
   return (
     <div>Record</div>
   )

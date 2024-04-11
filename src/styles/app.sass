@@ -1,5 +1,7 @@
 @import-normalize
+@import "./variables.sass"
 
+//global
 *,
 *::before,
 *::after
@@ -12,6 +14,7 @@ body,
 #root,
 .app
     height: 100%
+    font-size: $fz
 
 ul,
 ol,
@@ -33,3 +36,40 @@ a
 
 img
     display: block
+
+//app
+.header
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+    &__btn,
+    &__user
+        width: 64px !important
+        height: 64px
+
+    &__user
+        display: flex
+        align-items: center
+        justify-content: center
+        margin-right: calc( $gap - 5px )
+
+.header-user
+    border-radius: 6px
+    cursor: pointer
+    transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1)
+
+    &:hover
+        background-color: $mainGray
+
+    &:active
+        background-color: rgba(0, 0, 0, 0.15)
+
+.header-avatar
+    background-color: $mainBlue
+
+.ant-notification-notice-message
+    margin-bottom: 0 !important
+
+.tasks 
+    height: 100%

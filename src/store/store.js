@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import mainReducer from './mainSlice'
+import userModalSliceReducer from './userModalSlice'
+import cardModalSliceReducer from './cardModalSlice'
 
 export const store = configureStore({
   reducer: {
-    main: mainReducer,
+    userModal: userModalSliceReducer,
+    cardModal: cardModalSliceReducer,
   },
 })

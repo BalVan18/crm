@@ -1,9 +1,8 @@
 // import { useSelector, useDispatch } from 'react-redux'
 // import { decrement, increment, incrementByAmount, decrementByAmount } from '../store/mainSlice'
-import React from "react";
-import Board from "../components/Board";
+import Board from "../components/Board/Board";
 
-export default function Home() {
+export default function Tasks() {
   // const count = useSelector((state) => state.main.value)
   // const dispatch = useDispatch()
 
@@ -41,6 +40,9 @@ export default function Home() {
     //     </button>
     //   </div>
     // </div>
-    <Board />
+    <div className="tasks">
+      <div className="tasks__control tasks-control"></div>
+      <Board />
+    </div> 
   )
 }

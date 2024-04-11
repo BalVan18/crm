@@ -1,0 +1,19 @@
+@import '../../styles/variables.sass'
+
+.card
+    display: flex
+    justify-content: space-between
+    flex-direction: column
+    padding: calc( $gap / 3 )
+    background-color: $mainGray
+    border-radius: $borderRadius
+    cursor: grab
+    outline: none
+    transition: all .3s
+    margin: calc( $gap / 6 ) 0       
+        
+    &:hover,
+    &:active,
+    &:focus-visible
+        color: $mainWhite
+        background-color: $mainBlue
