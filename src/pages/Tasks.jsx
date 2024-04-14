@@ -12,14 +12,6 @@ export default function Tasks() {
     const { Search } = Input;
 
     const dispatch = useDispatch();
-    // const db = getDatabase();
-
-    // useEffect(() => {
-    //     const fetchTasks = ref(db, 'tasks/');
-    //     onValue(fetchTasks, (snapshot) => {
-    //         const data = snapshot.val();
-    //     });
-    // }, [db]);
 
     return (
         <div className="tasks">
@@ -37,7 +29,7 @@ export default function Tasks() {
                     { value: 'Yiminghe', label: 'yiminghe' },
                   ]}
                 />
-                <Search className="tasks__search tasks-search" size="large" placeholder="Поиск" /*onSearch={onSearch}*/ enterButton />
+                <Search className="tasks__search tasks-search" size="large" placeholder="Поиск" enterButton />
             </div>
             <Board />
         </div>

@@ -8,12 +8,8 @@ export const userModalSlice = createSlice({
   name: 'userModal',
   initialState,
   reducers: {
-    showUserModal: (state) => {
-      state.visible = true
-    },
-    closeUserModal: (state) => {
-      state.visible = false
-    },
+    showUserModal: (state) => ({visible: !state.visible}),
+    closeUserModal: (state) => ({visible: !state.visible})
   },
 })
 

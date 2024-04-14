@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -10,7 +10,6 @@ import {
 import { Routes, Route, Navigate, Link } from 'react-router-dom';
 import { Layout, Menu, Button, theme, notification, Avatar } from 'antd';
 import { getAuth } from "firebase/auth";
-
 
 import Tasks from './pages/Tasks';
 import Storage from './pages/Storage';
@@ -50,12 +49,11 @@ const App = () => {
 
     const [authorized, setAuthorized] = useState(checkAuthorized());
 
-    const { token:
-        { colorBgContainer, borderRadiusLG },
-    } = theme.useToken();
+    const { token: { colorBgContainer, borderRadiusLG }} = theme.useToken();
 
     const auth = getAuth();
     const [api, contextHolder] = notification.useNotification();
+
     const openNotificationWithIcon = (type, message, description, placement) => {
         api[type]({
             message: message,
@@ -63,6 +61,7 @@ const App = () => {
             placement: placement,
         });
     };
+
     const cachedOpenNotificationWithIcon = useCallback(openNotificationWithIcon, [api])
 
     useEffect(() => {

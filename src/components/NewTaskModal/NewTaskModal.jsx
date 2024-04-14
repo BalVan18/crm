@@ -46,7 +46,7 @@ export default function CardModal() {
                 clientsArr.push(data[executor])
             }
             setClients(clientsArr)
-            setNewClientId(clientsArr.length)
+            setNewClientId(clientsArr.length + 1)
         });
     }, [db]);
 
@@ -56,30 +56,24 @@ export default function CardModal() {
         update(ref(db), updates);
     }
 
-    // const writeUserData = (userId, name, email, imageUrl) => {
-    //     set(ref(db, 'tasks/' + userId), {
-    //         username: name,
-    //         email: email,
-    //         profile_picture: imageUrl
-    //     });
-    // }
-
-    const validateMessages = {
-        // eslint-disable-next-line no-template-curly-in-string
-        required: 'Заполните поле ${label}*',
-    };
+    const pushClientData = (clientData) => {
+        const updates = {};
+        updates[`clients/client_${newClientId}`] = clientData;
+        update(ref(db), updates);
+    }
 
     const onFinish = (values) => {
-        console.log('Success:', values);
-        const filteredClients = clients.filter(client => client.number === values.clientCarNumber)
-        let clientId;
+        const filteredClients = clients.filter(client => client.number === values.clientCarNumber);
+
+        let clientId,
+            date = new Date().toLocaleString();
+
         if (filteredClients.length > 0) {
             clientId = filteredClients[0].id
         } else {
             clientId = newClientId
         }
 
-        let date = new Date().toLocaleString();
         const taskData = {
             author_id: 1, // TODO Захуярить подтягивания автора
             client_id: clientId,
@@ -90,15 +84,25 @@ export default function CardModal() {
             status: 1,
             title: values.title,
         };
-        // const clientData = {
-        //     id: clientId,
-        //     model: values.clientCarModel,
-        //     name: values.clientName,
-        //     number: values.clientCarNumber,
-        //     phone: values.clientPhone,
-        // }
+
         pushTaskData(taskData);
-        // pushClientData(clientData);
+
+        if (filteredClients.length < 1){
+            const clientData = {
+                id: clientId,
+                model: values.clientCarModel,
+                name: values.clientName,
+                number: values.clientCarNumber,
+                phone: values.clientPhone,
+            }
+
+            pushClientData(clientData);
+        }
+    };
+
+    const validateMessages = {
+        // eslint-disable-next-line no-template-curly-in-string
+        required: 'Заполните поле ${label}*',
     };
 
     return (
