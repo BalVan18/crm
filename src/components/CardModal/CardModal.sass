@@ -1,0 +1,93 @@
+@import '../../styles/variables.sass'
+
+.card-modal
+    font-size: $fz
+
+    *
+        font-size: initial
+
+    &__wrap,
+    &__client,
+    &__car,
+    &__responsible
+        display: flex
+
+    &__wrap
+        flex-direction: column
+    
+    &__btn
+        width: 140px
+        margin-left: auto
+
+    .status
+        &__select
+            width: 48%
+
+    .client
+        gap: calc( $gap / 2 )
+
+        &__name,
+        &__phone
+            width: 100%
+
+    .car
+        gap: calc( $gap / 2 )
+
+        &__model,
+        &__number
+            width: 100%
+
+    .responsible
+        gap: calc( $gap / 2 )
+
+        &__author,
+        &__executor
+            width: 100%
+
+    .description
+        &__text
+            display: block
+            width: 100%
+
+.client-name,
+.client-phone
+    &__text
+        display: block
+        width: 100%
+
+.car-model,
+.car-number
+    &__text
+        display: block
+        width: 100%
+
+.responsible-author
+    &__text
+        display: block
+        width: 100%
+
+.client-name-text,
+.client-phone-text,
+.car-model-text,
+.car-number-text,
+.responsible-author-text,
+.description-text
+    padding: calc( $gap / 12 ) calc( $gap / 3 )
+    border: 1px solid $inputGray
+    border-radius: $borderRadius
+
+.ant-modal-body
+    display: flex
+    flex-direction: column
+    gap: calc( $gap / 2 )
+
+.ant-modal-title
+    $fz: 20px
+    font-size: $fz !important
+    font-weight: 700 !important
+
+.ant-select-selection-item
+    width: 200px
+
+.ant-modal-footer
+    margin-top: $gap !important

@@ -20,19 +20,22 @@ import Reports from './pages/Reports';
 import Authentication from './components/Authentication/Authentication';
 import UserModal from './components/UserModal/UserModal';
 import CardModal from './components/CardModal/CardModal';
+import NewTaskModal from "./components/NewTaskModal/NewTaskModal";
 
 import './styles/app.sass';
 
 import { showUserModal } from './store/userModalSlice';
 
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 const { Header, Sider, Content } = Layout;
 
 const App = () => {
     const [collapsed, setCollapsed] = useState(false);
-
+    
     const dispatch = useDispatch()
+    const cardModalState = useSelector((state) => state.cardModal[0].visible)
+    const newTaskModalState = useSelector((state) => state.newTaskModal.visible)
 
     function getCookie() {
         return document.cookie.split('; ').reduce((acc, item) => {
@@ -145,16 +148,9 @@ const App = () => {
                 </Layout>
             </Layout>
             }
-            <CardModal>
-                <div>
-                    Card Modal
-                </div>
-            </CardModal>
-            <UserModal>
-                <div>
-                    User Modal
-                </div>
-            </UserModal>
+            {cardModalState && <CardModal />}
+            <UserModal />
+            {newTaskModalState && <NewTaskModal />}
         </>
     );
 };

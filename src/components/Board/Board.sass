@@ -7,10 +7,22 @@
         max-width: 1760px
         height: 100%
         margin: 0 auto
-        border-radius: $borderRadius
-        border: 1px solid $mainBlue
-        user-select: none
 
     &__title 
         text-align: center
     
+.board-container 
+    .column:first-of-type
+        .column-list
+            border-bottom-left-radius: $borderRadius
+
+        .column-title
+            border-top-left-radius: $borderRadius
+
+    .column:last-of-type
+        .column-list
+            border-right: 1px solid $mainBlue
+            border-bottom-right-radius: $borderRadius
+
+        .column-title
+            border-top-right-radius: $borderRadius

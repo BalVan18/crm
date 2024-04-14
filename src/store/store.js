@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
-import userModalSliceReducer from './userModalSlice'
-import cardModalSliceReducer from './cardModalSlice'
+import userModalReducer from './userModalSlice'
+import cardModalReducer from './cardModalSlice'
+import newTaskModalReducer from './newTaskModalSlice'
 
 export const store = configureStore({
   reducer: {
-    userModal: userModalSliceReducer,
-    cardModal: cardModalSliceReducer,
+    userModal: userModalReducer,
+    cardModal: cardModalReducer,
+    newTaskModal: newTaskModalReducer,
   },
 })

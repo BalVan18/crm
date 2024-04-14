@@ -12,7 +12,7 @@ export default function Column({ title, tasks, id }) {
             </h3>
             <Droppable droppableId={id}>
                 {(provided) => (
-                    <ColumnList tasks={tasks} provided={provided}/>
+                    <ColumnList tasks={tasks} provided={provided} />
                 )}
             </Droppable>
         </div>

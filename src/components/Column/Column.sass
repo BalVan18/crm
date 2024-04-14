@@ -3,17 +3,9 @@
 .column
     width: 100%
 
-    &:not(:last-of-type)
-        border-right: 1px solid $mainBlue
-
     &__title
         position: sticky
         top: 0
-        padding: 10px 0
-        background-color: $mainBlue
-        text-align: center
-        text-transform: uppercase
-        color: $textWhite
         z-index: 100
 
     &__list
@@ -24,7 +16,14 @@
 .column-list
     padding: calc( $gap / 3 )
     overflow-y: auto
-    scrollbar-width: thin
+    scrollbar-width: none
 
     &::-webkit-scrollbar
         display: none
+
+.column-title
+    padding: 10px 0
+    background-color: $mainBlue
+    text-align: center
+    text-transform: uppercase
+    color: $textWhite

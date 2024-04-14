@@ -14,7 +14,6 @@ body,
 #root,
 .app
     height: 100%
-    font-size: $fz
 
 ul,
 ol,
@@ -71,5 +70,19 @@ img
 .ant-notification-notice-message
     margin-bottom: 0 !important
 
+//Tasks
 .tasks 
+    display: flex
+    flex-direction: column
     height: 100%
+    gap: calc( $gap / 2 )
+
+    &__control
+        display: flex
+        gap: calc( $gap / 2 )
+
+    &__btn
+        // margin-right: $gap
+
+    &__search
+        width: 200px

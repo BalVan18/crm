@@ -4,16 +4,63 @@
     display: flex
     justify-content: space-between
     flex-direction: column
+    height: 150px
+    margin: calc( $gap / 6 ) 0
     padding: calc( $gap / 3 )
     background-color: $mainGray
     border-radius: $borderRadius
-    cursor: grab
+    box-shadow: 0px 0px 4px 2px rgba(0, 21, 41, 0.2)
     outline: none
     transition: all .3s
-    margin: calc( $gap / 6 ) 0       
+
+    .top
+        display: flex
+        justify-content: space-between
+
+        &__wrap
+            display: flex
+            gap: calc( $gap / 12 )
+
+    .client
+        display: flex
+        flex-direction: column
+        gap: calc( $gap / 10 )
+
+        &__car
+            display: flex
+            justify-content: space-between 
+            align-items: center           
+
+    .bottom
+        display: flex
+        justify-content: space-between
         
     &:hover,
     &:active,
     &:focus-visible
         color: $mainWhite
         background-color: $mainBlue
+
+        .client-car-number
+            border-color: $mainWhite
+
+.card-top-id
+    font-weight: 700
+
+.client-car-model
+    $fz: 16px
+    font-size: $fz
+    font-weight: 700
+
+.client-car-number
+    padding: calc( $gap / 6 )
+    border: 1px solid $mainNavy
+    border-radius: calc( $borderRadius / 2 )
+    transition: border-color .3s
+
+.bottom-avatar
+    cursor: pointer
+
+.tooltip-inner
+    background-color: $mainBlue
+    color: $mainBlack
