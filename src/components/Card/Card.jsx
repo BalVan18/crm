@@ -25,21 +25,24 @@ export default function Card({ task, index }) {
         const fetchExecutor = ref(db, `employees/employee_${task.executor_id}`);
         onValue(fetchExecutor, (snapshot) => {
             const data = snapshot.val();
-            setExecutor(data.full_name);
+            if (data) setExecutor(data.full_name)
         });
 
         const fetchAuthor = ref(db, `employees/employee_${task.author_id}`);
         onValue(fetchAuthor, (snapshot) => {
             const data = snapshot.val();
-            setAuthor(data.full_name);
+            if (data) setAuthor(data.full_name)
         });
+
         const fetchClient = ref(db, `clients/client_${task.client_id}`);
         onValue(fetchClient, (snapshot) => {
             const data = snapshot.val();
-            setClient(data.name);
-            setClientPhone(data.phone);
-            setClientCarModel(data.model);
-            setClientCarNumber(data.number);
+            if (data) {
+                setClient(data.name);
+                setClientPhone(data.phone);
+                setClientCarModel(data.model);
+                setClientCarNumber(data.number);
+            }
         });
     }, [db, task.executor_id, task.author_id, task.client_id]);
 

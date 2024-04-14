@@ -26,7 +26,7 @@ import './styles/app.sass';
 
 import { showUserModal } from './store/userModalSlice';
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 const { Header, Sider, Content } = Layout;
 
@@ -34,8 +34,6 @@ const App = () => {
     const [collapsed, setCollapsed] = useState(false);
     
     const dispatch = useDispatch()
-    const cardModalState = useSelector((state) => state.cardModal[0].visible)
-    const newTaskModalState = useSelector((state) => state.newTaskModal.visible)
 
     function getCookie() {
         return document.cookie.split('; ').reduce((acc, item) => {
@@ -148,9 +146,9 @@ const App = () => {
                 </Layout>
             </Layout>
             }
-            {cardModalState && <CardModal />}
+            <CardModal />
             <UserModal />
-            {newTaskModalState && <NewTaskModal />}
+            <NewTaskModal />
         </>
     );
 };

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Modal, Button, Form, Select, Input, Descriptions } from 'antd';
+import { Modal, Button, Form, Select, Input } from 'antd';
 import { useSelector, useDispatch } from 'react-redux'
 import { closeNewTaskModal } from '../../store/newTaskModalSlice'
-import { getDatabase, ref, set, update, onValue } from "firebase/database";
+import { getDatabase, ref, update, onValue } from "firebase/database";
 
 export default function CardModal() {
 
@@ -48,7 +48,7 @@ export default function CardModal() {
             setClients(clientsArr)
             setNewClientId(clientsArr.length)
         });
-    }, []);
+    }, [db]);
 
     const pushTaskData = (taskData) => {
         const updates = {};
@@ -56,16 +56,17 @@ export default function CardModal() {
         update(ref(db), updates);
     }
 
-    const writeUserData = (userId, name, email, imageUrl) => {
-        set(ref(db, 'tasks/' + userId), {
-            username: name,
-            email: email,
-            profile_picture: imageUrl
-        });
-    }
+    // const writeUserData = (userId, name, email, imageUrl) => {
+    //     set(ref(db, 'tasks/' + userId), {
+    //         username: name,
+    //         email: email,
+    //         profile_picture: imageUrl
+    //     });
+    // }
 
     const validateMessages = {
-        required: "Заполните поле ${label}*",
+        // eslint-disable-next-line no-template-curly-in-string
+        required: 'Заполните поле ${label}*',
     };
 
     const onFinish = (values) => {
@@ -80,8 +81,7 @@ export default function CardModal() {
 
         let date = new Date().toLocaleString();
         const taskData = {
-            // TODO Захуярить подтягивания автора
-            author_id: 1,
+            author_id: 1, // TODO Захуярить подтягивания автора
             client_id: clientId,
             date: date.split(',')[0],
             description: values.description,
@@ -90,19 +90,19 @@ export default function CardModal() {
             status: 1,
             title: values.title,
         };
-        const clientData = {
-            id: clientId,
-            model: values.clientCarModel,
-            name: values.clientName,
-            number: values.clientCarNumber,
-            phone: values.clientPhone,
-        }
+        // const clientData = {
+        //     id: clientId,
+        //     model: values.clientCarModel,
+        //     name: values.clientName,
+        //     number: values.clientCarNumber,
+        //     phone: values.clientPhone,
+        // }
         pushTaskData(taskData);
         // pushClientData(clientData);
     };
 
     return (
-        <Modal title='Создать новую задачу' className='new-task-modal' open={newTaskModalState} /*onOk={() => okHandler()}*/ onCancel={() => dispatch(closeNewTaskModal())} centered footer={null}>
+        <Modal title='Создать новую задачу' className='new-task-modal' open={newTaskModalState} onCancel={() => dispatch(closeNewTaskModal())} centered footer={null}>
             <Form
                 validateMessages={validateMessages}
                 className="new-task-modal__form new-task-modal-form form"
