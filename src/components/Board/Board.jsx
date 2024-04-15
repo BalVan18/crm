@@ -6,7 +6,8 @@ import { getDatabase, ref, update } from "firebase/database";
 import "./Board.sass"
 import {useSelector} from "react-redux";
 
-export default function Board() {
+export default function Board({authorId, executorId}) {
+    console.log(authorId)
     const db = getDatabase();
 
     const tasks = useSelector((state) => state.bd.tasks);
@@ -17,11 +18,28 @@ export default function Board() {
     const [atWork, setAtWork] = useState([]);
 
     useEffect(() => {
-        setIncomplete(tasks.filter(task => task.status === 1))
-        setZapis(tasks.filter(task => task.status === 2))
-        setCompleted(tasks.filter(task => task.status === 4))
-        setAtWork(tasks.filter(task => task.status === 3))
-    }, [tasks]);
+        if (authorId && executorId) {
+            setIncomplete(tasks.filter(task => task.status === 1 && task.author_id === authorId  && task.executor_id === executorId))
+            setZapis(tasks.filter(task => task.status === 2 && task.author_id === authorId  && task.executor_id === executorId))
+            setCompleted(tasks.filter(task => task.status === 4 && task.author_id === authorId  && task.executor_id === executorId))
+            setAtWork(tasks.filter(task => task.status === 3 && task.author_id === authorId  && task.executor_id === executorId))
+        } else if (authorId) {
+            setIncomplete(tasks.filter(task => task.status === 1 && task.author_id === authorId))
+            setZapis(tasks.filter(task => task.status === 2 && task.author_id === authorId))
+            setCompleted(tasks.filter(task => task.status === 4 && task.author_id === authorId))
+            setAtWork(tasks.filter(task => task.status === 3 && task.author_id === authorId))
+        } else if (executorId){
+            setIncomplete(tasks.filter(task => task.status === 1 && task.executor_id === executorId))
+            setZapis(tasks.filter(task => task.status === 2 && task.executor_id === executorId))
+            setCompleted(tasks.filter(task => task.status === 4 && task.executor_id === executorId))
+            setAtWork(tasks.filter(task => task.status === 3 && task.executor_id === executorId))
+        } else {
+            setIncomplete(tasks.filter(task => task.status === 1))
+            setZapis(tasks.filter(task => task.status === 2))
+            setCompleted(tasks.filter(task => task.status === 4))
+            setAtWork(tasks.filter(task => task.status === 3))
+        }
+    }, [tasks, authorId, executorId]);
 
     const handleDragEnd = (result) => {
         const { destination, source, draggableId } = result;
