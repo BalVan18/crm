@@ -1,69 +1,32 @@
-import { useState, useEffect } from "react";
 import { Modal, Button, Form, Select, Input } from 'antd';
 import { useSelector, useDispatch } from 'react-redux'
 import { closeNewTaskModal } from '../../store/newTaskModalSlice'
-import { getDatabase, ref, update, onValue } from "firebase/database";
+import { getDatabase, ref, update } from "firebase/database";
 
 export default function CardModal() {
-
     const { TextArea } = Input;
 
     const dispatch = useDispatch()
     const newTaskModalState = useSelector((state) => state.newTaskModal.visible)
+    // const userEmail = useSelector((state) => state.user.email)
+    // console.log(userEmail)
     const db = getDatabase();
-
-    const [newTaskId, setNewTaskId] = useState(null);
-    const [newClientId, setNewClientId] = useState(null);
-    const [executors, setExecutors] = useState([]);
-    const [clients, setClients] = useState([]);
-
-    useEffect(() => {
-        const fetchTasks = ref(db, `tasks/`);
-        onValue(fetchTasks, (snapshot) => {
-            const data = snapshot.val();
-            let keys = [];
-            for (let key in data) {
-                keys.push(key)
-            }
-            setNewTaskId(keys.length + 1)
-        });
-
-        const fetchExecutors = ref(db, 'employees/');
-        onValue(fetchExecutors, (snapshot) => {
-            const data = snapshot.val();
-            let executorsArr = [];
-            for (let executor in data) {
-                executorsArr.push(data[executor])
-            }
-            setExecutors(executorsArr)
-        });
-
-        const fetchClients = ref(db, 'clients/');
-        onValue(fetchClients, (snapshot) => {
-            const data = snapshot.val();
-            let clientsArr = [];
-            for (let executor in data) {
-                clientsArr.push(data[executor])
-            }
-            setClients(clientsArr)
-            setNewClientId(clientsArr.length + 1)
-        });
-    }, [db]);
+    const dataFromDb = useSelector((state) => state.bd);
 
     const pushTaskData = (taskData) => {
         const updates = {};
-        updates[`tasks/task_${newTaskId}`] = taskData;
+        updates[`tasks/task_${dataFromDb.tasks.length + 1}`] = taskData;
         update(ref(db), updates);
     }
 
     const pushClientData = (clientData) => {
         const updates = {};
-        updates[`clients/client_${newClientId}`] = clientData;
+        updates[`clients/client_${dataFromDb.clients.length + 1}`] = clientData;
         update(ref(db), updates);
     }
 
     const onFinish = (values) => {
-        const filteredClients = clients.filter(client => client.number === values.clientCarNumber);
+        const filteredClients = dataFromDb.clients.filter(client => client.number === values.clientCarNumber);
 
         let clientId,
             date = new Date().toLocaleString();
@@ -71,7 +34,7 @@ export default function CardModal() {
         if (filteredClients.length > 0) {
             clientId = filteredClients[0].id
         } else {
-            clientId = newClientId
+            clientId = dataFromDb.clients.length + 1
         }
 
         const taskData = {
@@ -80,7 +43,7 @@ export default function CardModal() {
             date: date.split(',')[0],
             description: values.description,
             executor_id: values.executor,
-            id: newTaskId,
+            id: dataFromDb.tasks.length + 1,
             status: 1,
             title: values.title,
         };
@@ -132,7 +95,7 @@ export default function CardModal() {
                     <Select
                         className="status__select status-select"
                         placeholder="Введите исполнителя"
-                        options={executors.map(executor => ({value: executor.id, label: executor.full_name}))}
+                        options={dataFromDb.employees.map(executor => ({value: executor.id, label: executor.full_name}))}
                     />
                 </Form.Item>
                 <Form.Item className="form__item form-item" name="description" label="Причина обращения" rules={[{ required: true }]}>

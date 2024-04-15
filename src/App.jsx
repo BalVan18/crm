@@ -24,8 +24,11 @@ import NewTaskModal from "./components/NewTaskModal/NewTaskModal";
 import './styles/app.sass';
 
 import { showUserModal } from './store/userModalSlice';
+import { setUserData } from './store/userSlice';
+import { setEmployees, setTasks, setClients } from './store/bdSlice';
 
-import { useDispatch } from 'react-redux'
+import {useDispatch} from 'react-redux';
+import {getDatabase, onValue, ref} from "firebase/database";
 
 const { Header, Sider, Content } = Layout;
 
@@ -33,6 +36,7 @@ const App = () => {
     const [collapsed, setCollapsed] = useState(false);
     
     const dispatch = useDispatch()
+    const db = getDatabase();
 
     function getCookie() {
         return document.cookie.split('; ').reduce((acc, item) => {
@@ -42,12 +46,8 @@ const App = () => {
         }, {})
     }
 
-    const checkAuthorized = () => {
-        const cookie = getCookie();
-        return cookie.authorized;
-    }
-
-    const [authorized, setAuthorized] = useState(checkAuthorized());
+    const [authorized, setAuthorized] = useState(getCookie().authorized);
+    dispatch(setUserData(getCookie().userEmail));
 
     const { token: { colorBgContainer, borderRadiusLG }} = theme.useToken();
 
@@ -66,7 +66,43 @@ const App = () => {
 
     useEffect(() => {
         authorized && cachedOpenNotificationWithIcon('success', 'Пользователь авторизирован', '', 'top');
-    }, [authorized, cachedOpenNotificationWithIcon])
+
+        const fetchEmployees = ref(db, 'employees/');
+        onValue(fetchEmployees, (snapshot) => {
+            if (snapshot.exists()){
+                const data = snapshot.val();
+                let employeesArr = [];
+                for (let employee in data) {
+                    employeesArr.push(data[employee])
+                }
+                dispatch(setEmployees(employeesArr))
+            }
+        });
+
+        const fetchTasks = ref(db, 'tasks/');
+        onValue(fetchTasks, (snapshot) => {
+            if (snapshot.exists()){
+                const data = snapshot.val();
+                let tasksArr = [];
+                for (let task in data) {
+                    tasksArr.push(data[task])
+                }
+                dispatch(setTasks(tasksArr))
+            }
+        });
+
+        const fetchClients = ref(db, 'clients/');
+        onValue(fetchClients, (snapshot) => {
+            if (snapshot.exists()){
+                const data = snapshot.val();
+                let clientsArr = [];
+                for (let executor in data) {
+                    clientsArr.push(data[executor])
+                }
+                dispatch(setClients(clientsArr))
+            }
+        });
+    }, [authorized, cachedOpenNotificationWithIcon, db, dispatch])
 
     return (
         <>

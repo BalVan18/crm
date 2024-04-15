@@ -2,43 +2,28 @@ import { useState, useEffect } from "react";
 import { Modal, Button, Select } from 'antd';
 import { useSelector, useDispatch } from 'react-redux'
 import { closeCardModal } from '../../store/cardModalSlice'
-import { getDatabase, ref, onValue, update } from "firebase/database";
+import {ref, update, getDatabase} from "firebase/database";
 
 import "./CardModal.sass";
 
-
 export default function CardModal() {
     const modalData = useSelector((state) => state.cardModal)
-    const dispatch = useDispatch()
     const db = getDatabase();
+    const dispatch = useDispatch()
+    const dataFromDb = useSelector((state) => state.bd);
 
     const [task, setTask] = useState({});
-    const [executors, setExecutors] = useState([]);
     const [executorId, setExecutorId] = useState(null);
     const [status, setStatus] = useState(modalData.info.status);
 
     useEffect(() => {
-        const fetchExecutors = ref(db, 'employees/');
-        onValue(fetchExecutors, (snapshot) => {
-            const data = snapshot.val();
-            let executorsArr = [];
-            for (let executor in data) {
-                executorsArr.push(data[executor])
-            }
-            setExecutors(executorsArr)
-        });
-
-        const fetchTask = ref(db, `tasks/task_${modalData.info.id}`);
-        onValue(fetchTask, (snapshot) => {
-            const data = snapshot.val();
-            setTask(data);
-        });
-
-    }, [db, modalData.info.id]);
+        const task = dataFromDb.tasks.filter(task => task.id === modalData.info.id)[0];
+        setTask(task);
+    }, [modalData.info.id, dataFromDb.tasks]);
     
     const handleChangeExecutor = (e) => {
-        const currentExecutor = executors.filter(executor => executor.full_name === e);
-        setExecutorId(currentExecutor[0].id);
+        const currentExecutor = dataFromDb.employees.filter(executor => executor.full_name === e)[0];
+        setExecutorId(currentExecutor.id);
     }
 
     const handleChangeStatus = (e) => {
@@ -122,7 +107,7 @@ export default function CardModal() {
                         className="responsible-executor__select responsible-executor-select"
                         onChange={handleChangeExecutor}
                         defaultValue={modalData.info.executor}
-                        options={executors.map(executor => ({value: executor.full_name, label: executor.full_name}))}
+                        options={dataFromDb.employees.map(executor => ({value: executor.full_name, label: executor.full_name}))}
                     />
                 </div>
             </div>

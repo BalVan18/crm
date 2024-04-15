@@ -7,9 +7,10 @@ import "./Authentication.sass"
 const Authentication = ({ auth, onAuthorized, openNotificationWithIcon }) => {
     const onFinish = (values) => {
         signInWithEmailAndPassword(auth, values.username, values.password)
-            .then(() => {
+            .then((userCredential) => {
                 onAuthorized(true);
                 document.cookie = 'authorized=true;max-age=604800'
+                document.cookie = `userEmail=${userCredential.user.email};max-age=604800`
             })
             .catch(() => {
                 openNotificationWithIcon('error', 'Ошибка авторизации', 'Введите правильный e-mail/пароль', 'top');

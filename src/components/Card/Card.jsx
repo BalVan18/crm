@@ -2,51 +2,33 @@ import { useState, useEffect } from "react";
 import { Avatar, Tooltip } from 'antd';
 import { Draggable } from "react-beautiful-dnd";
 import { showCardModal } from '../../store/cardModalSlice';
-import { useDispatch } from 'react-redux'
-import { getDatabase, ref, onValue } from "firebase/database";
+import {useDispatch, useSelector} from 'react-redux';
 
 import "./Card.sass";
 
 export default function Card({ task, index }) {
     const dispatch = useDispatch();
-    const db = getDatabase();
 
-    const [author, setAuthor] = useState('');
-    const [executor, setExecutor] = useState('');
-    const [client, setClient] = useState('');
-    const [clientPhone, setClientPhone] = useState('');
-    const [clientCarModel, setClientCarModel] = useState('');
-    const [clientCarNumber, setClientCarNumber] = useState('');
+    const dataFromDb = useSelector((state) => state.bd);
 
-    const slicedAuthor = author.replace(/(.)+ (.).+ (.).+/, '$2$3')
-    const slicedExecutor = executor.replace(/(.)+ (.).+ (.).+/, '$2$3')
+    const [authorName, setAuthorName] = useState('');
+    const [executorName, setExecutorName] = useState('');
+    const [clientData, setClientData] = useState({name: '',phone: '', model: '',number: ''});
+
+    const slicedAuthorName = authorName.replace(/(.)+ (.).+ (.).+/, '$2$3')
+    const slicedExecutorName = executorName.replace(/(.)+ (.).+ (.).+/, '$2$3')
 
     useEffect(() => {
-        const fetchExecutor = ref(db, `employees/employee_${task.executor_id}`);
-        onValue(fetchExecutor, (snapshot) => {
-            const data = snapshot.val();
-            if (data) setExecutor(data.full_name)
-        });
+        const executor = dataFromDb.employees.filter(employee => employee.id === task.executor_id)[0];
+        const author = dataFromDb.employees.filter(employee => employee.id === task.author_id)[0];
+        const client = dataFromDb.clients.filter(client => client.id === task.client_id)[0];
 
-        const fetchAuthor = ref(db, `employees/employee_${task.author_id}`);
-        onValue(fetchAuthor, (snapshot) => {
-            const data = snapshot.val();
-            if (data) setAuthor(data.full_name)
-        });
+        if (executor) setExecutorName(executor.full_name)
+        if (author) setAuthorName(author.full_name)
+        if (client) setClientData(client)
+    }, [task.executor_id, task.author_id, task.client_id, dataFromDb.employees, dataFromDb.clients]);
 
-        const fetchClient = ref(db, `clients/client_${task.client_id}`);
-        onValue(fetchClient, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                setClient(data.name);
-                setClientPhone(data.phone);
-                setClientCarModel(data.model);
-                setClientCarNumber(data.number);
-            }
-        });
-    }, [db, task.executor_id, task.author_id, task.client_id]);
-
-    const modalData = [task.id, client, task.date, task.title, author, executor, clientPhone, task.description, clientCarModel, clientCarNumber.toLowerCase(), task.status]
+    const modalData = [task.id, clientData.name, task.date, task.title, authorName, executorName, clientData.phone, task.description, clientData.model, clientData.number.toLowerCase(), task.status]
 
     return (
         <Draggable draggableId={`${task.id}`} key={task.id} index={index}>
@@ -74,26 +56,26 @@ export default function Card({ task, index }) {
                     </div>
                     <div className="card__client card-client client">
                         <span className="client__name client-name">
-                            {client}
+                            {clientData.name}
                         </span>
                         <div className="client__car client-car">
                             <span className="client-car__model client-car-model">
-                                {clientCarModel}
+                                {clientData.model}
                             </span>
                             <span className="client-car__number client-car-number">
-                                {clientCarNumber.toLowerCase()}
+                                {clientData.number.toLowerCase()}
                             </span>
                         </div>
                     </div>
                     <div className="card__bottom card-bottom bottom">
-                        <Tooltip title={author} placement="right"  mouseEnterDelay="0.5">
+                        <Tooltip title={authorName} placement="right"  mouseEnterDelay="0.5">
                             <Avatar className="bottom__avatar bottom-avatar" shape="square">
-                                {slicedAuthor}
+                                {slicedAuthorName}
                             </Avatar>
                         </Tooltip>
-                        <Tooltip title={executor} placement="left"  mouseEnterDelay="0.5">
+                        <Tooltip title={executorName} placement="left"  mouseEnterDelay="0.5">
                             <Avatar className="bottom__avatar bottom-avatar" shape="square">
-                                {slicedExecutor}
+                                {slicedExecutorName}
                             </Avatar>
                         </Tooltip>
                     </div>

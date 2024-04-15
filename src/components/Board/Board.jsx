@@ -1,32 +1,27 @@
 import { useState, useEffect } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import Column from "../Column/Column";
-import { getDatabase, ref, onValue, update } from "firebase/database";
+import { getDatabase, ref, update } from "firebase/database";
 
 import "./Board.sass"
+import {useSelector} from "react-redux";
 
 export default function Board() {
+    const db = getDatabase();
+
+    const tasks = useSelector((state) => state.bd.tasks);
+
     const [zapis, setZapis] = useState([]);
     const [incomplete, setIncomplete] = useState([]);
     const [completed, setCompleted] = useState([]);
     const [atWork, setAtWork] = useState([]);
 
-    const db = getDatabase();
-
     useEffect(() => {
-        const fetchTasks = ref(db, 'tasks/');
-        onValue(fetchTasks, (snapshot) => {
-            const data = snapshot.val();
-            let tasksArr = [];
-            for (let task in data) {
-                tasksArr.push(data[task])
-            }
-            setIncomplete(tasksArr.filter(task => task.status === 1))
-            setZapis(tasksArr.filter(task => task.status === 2))
-            setCompleted(tasksArr.filter(task => task.status === 4))
-            setAtWork(tasksArr.filter(task => task.status === 3))
-        });
-    }, [db]);
+        setIncomplete(tasks.filter(task => task.status === 1))
+        setZapis(tasks.filter(task => task.status === 2))
+        setCompleted(tasks.filter(task => task.status === 4))
+        setAtWork(tasks.filter(task => task.status === 3))
+    }, [tasks]);
 
     const handleDragEnd = (result) => {
         const { destination, source, draggableId } = result;
@@ -46,7 +41,6 @@ export default function Board() {
 
         const updates = {};
         updates[`tasks/task_${task.id}`] = updatedTask;
-
         update(ref(db), updates);
     };
 
