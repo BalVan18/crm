@@ -8,8 +8,7 @@ export default function CardModal() {
 
     const dispatch = useDispatch()
     const newTaskModalState = useSelector((state) => state.newTaskModal.visible)
-    // const userEmail = useSelector((state) => state.user.email)
-    // console.log(userEmail)
+    const user = useSelector((state) => state.user)
     const db = getDatabase();
     const dataFromDb = useSelector((state) => state.bd);
 
@@ -38,7 +37,7 @@ export default function CardModal() {
         }
 
         const taskData = {
-            author_id: 1, // TODO Захуярить подтягивания автора
+            author_id: user.id,
             client_id: clientId,
             date: date.split(',')[0],
             description: values.description,
@@ -61,6 +60,8 @@ export default function CardModal() {
 
             pushClientData(clientData);
         }
+
+        dispatch(closeNewTaskModal());
     };
 
     const validateMessages = {

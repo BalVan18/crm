@@ -27,7 +27,7 @@ import { showUserModal } from './store/userModalSlice';
 import { setUserData } from './store/userSlice';
 import { setEmployees, setTasks, setClients } from './store/bdSlice';
 
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {getDatabase, onValue, ref} from "firebase/database";
 
 const { Header, Sider, Content } = Layout;
@@ -47,7 +47,8 @@ const App = () => {
     }
 
     const [authorized, setAuthorized] = useState(getCookie().authorized);
-    dispatch(setUserData(getCookie().userEmail));
+
+    const employees = useSelector((state) => state.bd.employees)
 
     const { token: { colorBgContainer, borderRadiusLG }} = theme.useToken();
 
@@ -103,6 +104,11 @@ const App = () => {
             }
         });
     }, [authorized, cachedOpenNotificationWithIcon, db, dispatch])
+
+    useEffect(() => {
+        const user = employees.filter(employee => employee.email === getCookie().userEmail)[0];
+        dispatch(setUserData(user));
+    }, [employees, dispatch]);
 
     return (
         <>
