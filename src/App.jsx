@@ -46,7 +46,7 @@ const App = () => {
         }, {})
     }
 
-    const [authorized, setAuthorized] = useState(getCookie().authorized);
+    const [authorized, setAuthorized] = useState(getCookie().authorized === 'true');
 
     const employees = useSelector((state) => state.bd.employees)
 
@@ -188,7 +188,7 @@ const App = () => {
             </Layout>
             }
             <CardModal />
-            <UserModal />
+            <UserModal authorized={authorized} setAuthorized={setAuthorized}/>
             <NewTaskModal />
         </>
     );

@@ -7,7 +7,6 @@ import "./Board.sass"
 import {useSelector} from "react-redux";
 
 export default function Board({authorId, executorId}) {
-    console.log(authorId)
     const db = getDatabase();
 
     const tasks = useSelector((state) => state.bd.tasks);
