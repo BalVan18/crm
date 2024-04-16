@@ -54,7 +54,9 @@ export default function CardModal() {
         const updates = {};
         updates[`tasks/task_${modalData.info.id}`] = updatedTask;
         update(ref(db), updates);
-        dispatch(closeCardModal());         
+        dispatch(closeCardModal());
+
+        // TODO для Ванька вывести в этой мадолке дату и приоритет
     }
 
     return (

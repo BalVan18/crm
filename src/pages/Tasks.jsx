@@ -7,8 +7,6 @@ import Board from "../components/Board/Board";
 import {useState, useCallback, useEffect} from "react";
 
 export default function Tasks() {
-    const { Search } = Input;
-
     const dispatch = useDispatch();
     const employees = useSelector((state) => state.bd.employees)
     const tasks = useSelector((state) => state.bd.tasks)
@@ -25,8 +23,9 @@ export default function Tasks() {
         setExecutorId(e)
     }
 
-    const searchHandler = useCallback((filterString) => {
-        const filterContent = (filterString) => tasks.filter(el => el.title.toLowerCase().indexOf(filterString.toLowerCase()) > -1)
+    const searchHandler = useCallback((e) => {
+        const filterString = e.target.value
+        const filterContent = (e) => tasks.filter(el => el.title.toLowerCase().indexOf(filterString.toLowerCase()) > -1)
 
         if (filterString.length > 0) {
             setContent(filterContent(filterString).length > 0 ? filterContent(filterString) : [])
@@ -59,7 +58,7 @@ export default function Tasks() {
                     onChange={handleChangeExecutor}
                     options={employees.map(employee => ({value: employee.id, label: employee.full_name}))}
                 />
-                <Search className="tasks__search tasks-search" size="large" placeholder="Поиск" allowClear enterButton onSearch={searchHandler}/>
+                <Input className="tasks__search tasks-search" size="large" placeholder="Поиск" allowClear onChange={searchHandler}/>
             </div>
             <Board authorId={authorId} executorId={executorId} searchedContent={content}/>
         </div>

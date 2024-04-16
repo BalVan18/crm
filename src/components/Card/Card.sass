@@ -2,16 +2,39 @@
 
 .card
     display: flex
+    position: relative
     justify-content: space-between
     flex-direction: column
     height: 150px
     margin: calc( $gap / 6 ) 0
-    padding: calc( $gap / 3 )
+    padding: calc( $gap / 3 ) calc( $gap / 3 ) calc( $gap / 3 ) calc( $gap / 2 )
     background-color: $mainGray
     border-radius: $borderRadius
     box-shadow: 0px 0px 4px 2px rgba(0, 21, 41, 0.2)
     outline: none
     transition: all .3s
+
+    &::before
+        content: ""
+        position: absolute
+        left: 0
+        bottom: 0
+        top: 0
+        width: 5px
+        border-top-left-radius: $borderRadius
+        border-bottom-left-radius: $borderRadius
+
+    &--normal
+        &::before
+            background-color: green
+
+    &--critical
+        &::before
+            background-color: red
+
+    &--serious
+        &::before
+            background-color: yellow
 
     .top
         display: flex

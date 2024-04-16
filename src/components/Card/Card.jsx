@@ -30,11 +30,21 @@ export default function Card({ task, index }) {
 
     const modalData = [task.id, clientData.name, task.date, task.title, authorName, executorName, clientData.phone, task.description, clientData.model, clientData.number.toLowerCase(), task.status]
 
+    const classes = () => {
+        if (task.priority === 'высокий') {
+            return 'card--critical'
+        } else if (task.priority === 'низкий') {
+             return 'card--normal'
+        } else {
+             return 'card--serious'
+        }
+    }
+
     return (
         <Draggable draggableId={`${task.id}`} key={task.id} index={index}>
             {(provided) => (
                 <div
-                    className="card"
+                    className={`card ${classes()}`}
                     onClick={() => dispatch(showCardModal(modalData))}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
