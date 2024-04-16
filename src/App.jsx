@@ -185,8 +185,7 @@ const App = () => {
                         </Routes>
                     </Content>
                 </Layout>
-            </Layout>
-            }
+            </Layout>}
             <CardModal />
             <UserModal authorized={authorized} setAuthorized={setAuthorized}/>
             <NewTaskModal />

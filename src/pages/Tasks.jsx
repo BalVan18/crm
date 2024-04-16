@@ -4,16 +4,18 @@ import { showNewTaskModal } from '../store/newTaskModalSlice'
 import {useDispatch, useSelector} from 'react-redux'
 
 import Board from "../components/Board/Board";
-import {useState} from "react";
+import {useState, useCallback, useEffect} from "react";
 
 export default function Tasks() {
     const { Search } = Input;
 
     const dispatch = useDispatch();
     const employees = useSelector((state) => state.bd.employees)
+    const tasks = useSelector((state) => state.bd.tasks)
 
     const [authorId, setAuthorId] = useState(null);
     const [executorId, setExecutorId] = useState(null);
+    const [content, setContent] = useState(tasks);
 
     const handleChangeAuthor = (e) => {
         setAuthorId(e)
@@ -22,6 +24,20 @@ export default function Tasks() {
     const handleChangeExecutor = (e) => {
         setExecutorId(e)
     }
+
+    const searchHandler = useCallback((filterString) => {
+        const filterContent = (filterString) => tasks.filter(el => el.title.toLowerCase().indexOf(filterString.toLowerCase()) > -1)
+
+        if (filterString.length > 0) {
+            setContent(filterContent(filterString).length > 0 ? filterContent(filterString) : [])
+        } else {
+            setContent(tasks)
+        }
+    }, [tasks])
+
+    useEffect(() => {
+        setContent(tasks)
+    }, [tasks]);
 
     return (
         <div className="tasks">
@@ -43,9 +59,9 @@ export default function Tasks() {
                     onChange={handleChangeExecutor}
                     options={employees.map(employee => ({value: employee.id, label: employee.full_name}))}
                 />
-                <Search className="tasks__search tasks-search" size="large" placeholder="Поиск" enterButton />
+                <Search className="tasks__search tasks-search" size="large" placeholder="Поиск" allowClear enterButton onSearch={searchHandler}/>
             </div>
-            <Board authorId={authorId} executorId={executorId}/>
+            <Board authorId={authorId} executorId={executorId} searchedContent={content}/>
         </div>
     )
 }
