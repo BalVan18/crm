@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Avatar, Tooltip } from 'antd';
 import { Draggable } from "react-beautiful-dnd";
-import { showCardModal } from '../../store/cardModalSlice';
+import { showCardModal } from '../../store/modalSlice';
 import {useDispatch, useSelector} from 'react-redux';
 
 import "./Card.sass";

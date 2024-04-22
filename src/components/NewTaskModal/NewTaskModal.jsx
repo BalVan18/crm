@@ -1,13 +1,13 @@
 import { Modal, Button, Form, Select, Input } from 'antd';
 import { useSelector, useDispatch } from 'react-redux'
-import { closeNewTaskModal } from '../../store/newTaskModalSlice'
+import { toggleNewTaskModal } from '../../store/modalSlice'
 import { getDatabase, ref, update } from "firebase/database";
 
 export default function CardModal() {
     const { TextArea } = Input;
 
     const dispatch = useDispatch()
-    const newTaskModalState = useSelector((state) => state.newTaskModal.visible)
+    const newTaskModalState = useSelector((state) => state.modal.newTask.visible)
     const user = useSelector((state) => state.user)
     const db = getDatabase();
     const dataFromDb = useSelector((state) => state.bd);
@@ -61,7 +61,7 @@ export default function CardModal() {
             pushClientData(clientData);
         }
 
-        dispatch(closeNewTaskModal());
+        dispatch(toggleNewTaskModal());
     };
 
     const validateMessages = {
@@ -70,7 +70,7 @@ export default function CardModal() {
     };
 
     return (
-        <Modal title='Создать новую задачу' className='new-task-modal' open={newTaskModalState} onCancel={() => dispatch(closeNewTaskModal())} centered footer={null}>
+        <Modal title='Создать новую задачу' className='new-task-modal' open={newTaskModalState} onCancel={() => dispatch(toggleNewTaskModal())} centered footer={null}>
             <Form
                 validateMessages={validateMessages}
                 className="new-task-modal__form new-task-modal-form form"

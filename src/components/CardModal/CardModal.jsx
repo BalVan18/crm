@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { Modal, Button, Select } from 'antd';
 import { useSelector, useDispatch } from 'react-redux'
-import { closeCardModal } from '../../store/cardModalSlice'
+import { closeCardModal } from '../../store/modalSlice'
 import {ref, update, getDatabase} from "firebase/database";
 
 import "./CardModal.sass";
 
 export default function CardModal() {
-    const modalData = useSelector((state) => state.cardModal)
+    const modalData = useSelector((state) => state.modal.card)
     const db = getDatabase();
     const dispatch = useDispatch()
     const dataFromDb = useSelector((state) => state.bd);
