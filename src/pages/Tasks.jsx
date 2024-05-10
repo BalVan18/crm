@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Select, Input } from 'antd';
-import { showNewTaskModal } from '../store/newTaskModalSlice'
+import { toggleNewTaskModal } from '../store/modalSlice'
 import { setRouterData } from '../store/routerSlice'
 
 import Board from "../components/Board/Board";
@@ -43,7 +43,7 @@ export default function Tasks() {
     return (
         <div className="tasks">
             <div className="tasks__control tasks-control">
-                <Button className="tasks__btn tasks-btn" type="primary" size="large" icon={<PlusOutlined />} onClick={() => dispatch(showNewTaskModal())}/>
+                <Button className="tasks__btn tasks-btn" type="primary" size="large" icon={<PlusOutlined />} onClick={() => dispatch(toggleNewTaskModal())}/>
                 <Select
                   type="primary"
                   size="large"
