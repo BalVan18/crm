@@ -1,0 +1,30 @@
+@import '../../styles/variables.sass'
+
+.new-task-modal
+    &__title
+        $fz: 18px
+
+        margin-bottom: calc( $gap / 2 )
+        font-size: $fz
+        font-weight: 700
+
+    .ant-form-item
+        margin-bottom: calc( $gap / 3 )
+
+    .ant-form-item-control-input-content,
+    .ant-select-selector,
+    .ant-form-item-required
+        font-size: $fz !important
+
+    .ant-form-item-required
+        font-weight: 500
+
+    .ant-input
+        font-size: inherit !important
+
+    .ant-input
+        &::placeholder
+            color: $textBlack
+
+    .ant-select-selection-placeholder
+        color: rgba(0, 0, 0, 0.5)

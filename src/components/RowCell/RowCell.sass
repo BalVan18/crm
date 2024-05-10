@@ -1,0 +1,70 @@
+@import '../../styles/variables.sass'
+    
+.table-row-cell
+    $self: &
+
+    position: relative
+    display: flex
+    justify-content: space-between
+    align-items: center
+    width: 100%
+    padding: 10px 15px
+
+    &:not(:last-of-type)
+        border-right: 1px solid $mainBlue        
+
+    &:hover
+        #{$self}__btn
+            opacity: 1
+            pointer-events: all        
+
+    &__btn
+        display: inline-block
+        margin-left: auto
+        opacity: 0
+        background-color: transparent
+        border: none
+        cursor: pointer
+        pointer-events: none
+        transition: color .2s, opacity ease-out .3s
+
+        &--edit
+            &:hover
+                color: $mainBlue
+
+        &--save
+            display: none
+            opacity: 1
+
+            &:hover
+                color: $successColor
+
+        &--hidden
+            display: none
+
+        &--visible
+            display: block
+
+    &__input
+        position: absolute
+        display: none
+        top: 2px
+        right: 30px
+        bottom: 0
+        left: 15px
+        border: none
+        outline: none
+        font-size: 15px
+        color: $textBlack
+        
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button
+            -webkit-appearance: none
+            margin: 0
+
+        &::placeholder
+            color: $textBlack
+            font-size: 15px
+
+        &--visible
+            display: block

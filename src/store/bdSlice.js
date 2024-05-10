@@ -3,7 +3,9 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     employees: [],
     clients: [],
-    tasks: []
+    tasks: [],
+    works: [],
+    storage: [],
 }
 
 export const bdSlice = createSlice({
@@ -22,9 +24,17 @@ export const bdSlice = createSlice({
             ...state,
             tasks: action.payload
         }),
+        setWorks: (state, action) => ({
+            ...state,
+            works: action.payload  
+        }),
+        setStorage: (state, action) => ({
+            ...state,
+            storage: action.payload  
+        })
     }
 })
 
-export const { setEmployees, setClients, setTasks } = bdSlice.actions
+export const { setEmployees, setClients, setTasks, setWorks, setStorage } = bdSlice.actions
 
 export default bdSlice.reducer

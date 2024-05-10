@@ -6,6 +6,8 @@ import {
     ProjectOutlined,
     ToolOutlined,
     UserOutlined,
+    LineChartOutlined,
+    TeamOutlined
 } from '@ant-design/icons';
 import { Routes, Route, Navigate, Link } from 'react-router-dom';
 import { Layout, Menu, Button, theme, notification, Avatar } from 'antd';
@@ -13,19 +15,21 @@ import { getAuth } from "firebase/auth";
 
 import Tasks from './pages/Tasks';
 import Storage from './pages/Storage';
-import Service from './pages/Service';
-import Record from './pages/Record';
+import Works from './pages/Works';
+import Clients from './pages/Clients';
 import Reports from './pages/Reports';
 import Authentication from './components/Authentication/Authentication';
 import UserModal from './components/UserModal/UserModal';
 import CardModal from './components/CardModal/CardModal';
 import NewTaskModal from "./components/NewTaskModal/NewTaskModal";
+import NewStorageItemModal from "./components/NewStorageItemModal/NewStorageItemModal";
+import NewWorkModal from "./components/NewWorkModal/NewWorkModal";
 
 import './styles/app.sass';
 
 import { showUserModal } from './store/userModalSlice';
 import { setUserData } from './store/userSlice';
-import { setEmployees, setTasks, setClients } from './store/bdSlice';
+import { setEmployees, setTasks, setClients, setWorks, setStorage } from './store/bdSlice';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {getDatabase, onValue, ref} from "firebase/database";
@@ -49,6 +53,7 @@ const App = () => {
     const [authorized, setAuthorized] = useState(getCookie().authorized === 'true');
 
     const employees = useSelector((state) => state.bd.employees)
+    const routerKey = useSelector((state) => state.router)
 
     const { token: { colorBgContainer, borderRadiusLG }} = theme.useToken();
 
@@ -97,10 +102,34 @@ const App = () => {
             if (snapshot.exists()){
                 const data = snapshot.val();
                 let clientsArr = [];
-                for (let executor in data) {
-                    clientsArr.push(data[executor])
+                for (let client in data) {
+                    clientsArr.push(data[client])
                 }
                 dispatch(setClients(clientsArr))
+            }
+        });
+
+        const fetchWorks = ref(db, 'works/');
+        onValue(fetchWorks, (snapshot) => {
+            if (snapshot.exists()){
+                const data = snapshot.val();
+                let worksArr = [];
+                for (let work in data) {
+                    worksArr.push(data[work])
+                }
+                dispatch(setWorks(worksArr))
+            }
+        });
+
+        const fetchStorage = ref(db, 'storage/');
+        onValue(fetchStorage, (snapshot) => {
+            if (snapshot.exists()){
+                const data = snapshot.val();
+                let storageArr = [];
+                for (let item in data) {
+                    storageArr.push(data[item])
+                }
+                dispatch(setStorage(storageArr))
             }
         });
     }, [authorized, cachedOpenNotificationWithIcon, db, dispatch])
@@ -120,7 +149,7 @@ const App = () => {
                     <Menu
                         theme="dark"
                         mode="inline"
-                        defaultSelectedKeys={['1']}
+                        selectedKeys={[routerKey]}
                         items={[
                             {
                                 key: '1',
@@ -135,14 +164,16 @@ const App = () => {
                             {
                                 key: '3',
                                 icon: <ToolOutlined />,
-                                label: <Link to="/service">Сервис</Link>,
+                                label: <Link to="/works">Работы</Link>,
                             },
                             {
                                 key: '4',
-                                label: <Link to="/record">Запись</Link>,
+                                icon: <TeamOutlined />,
+                                label: <Link to="/clients">Клиенты</Link>,
                             },
                             {
                                 key: '5',
+                                icon: <LineChartOutlined />,
                                 label: <Link to="/reports">Отчёты</Link>,
                             },
                         ]}
@@ -178,8 +209,8 @@ const App = () => {
                         <Routes>
                             <Route path="/" element={<Tasks />} />
                             <Route path="/storage" element={<Storage />} />
-                            <Route path="/service" element={<Service />} />
-                            <Route path="/record" element={<Record />} />
+                            <Route path="/works" element={<Works />} />
+                            <Route path="/clients" element={<Clients />} />
                             <Route path="/reports" element={<Reports />} />
                             <Route path="*" element={<Navigate to="/" replace />} />
                         </Routes>
@@ -189,6 +220,8 @@ const App = () => {
             <CardModal />
             <UserModal authorized={authorized} setAuthorized={setAuthorized}/>
             <NewTaskModal />
+            <NewStorageItemModal />
+            <NewWorkModal />
         </>
     );
 };

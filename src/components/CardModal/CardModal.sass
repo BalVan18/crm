@@ -6,48 +6,87 @@
     *
         font-size: initial
 
+    &__top,
+    &__content,
     &__wrap,
     &__client,
     &__car,
     &__responsible
         display: flex
 
+    &__top
+        align-items: flex-end
+        gap: calc( $gap / 10 )
+        margin-bottom: calc( $gap / 3 )
+
     &__wrap
+        gap: calc( $gap / 2 )
+
+    &__status,
+    &__priority
+        width: 100%
+
+    &__content
         flex-direction: column
-    
-    &__btn
-        width: 140px
-        margin-left: auto
-
-    .status
-        &__select
-            width: 48%
-
-    .client
         gap: calc( $gap / 2 )
 
-        &__name,
-        &__phone
-            width: 100%
-
-    .car
+    .ant-modal-body
+        display: flex
+        flex-direction: column
         gap: calc( $gap / 2 )
 
-        &__model,
-        &__number
-            width: 100%
+    .ant-modal-title
+        $fz: 20px
 
-    .responsible
-        gap: calc( $gap / 2 )
+        font-size: $fz !important
+        font-weight: 700 !important
 
-        &__author,
-        &__executor
-            width: 100%
+    .ant-select
+        width: 100%
 
-    .description
-        &__text
-            display: block
-            width: 100%
+    .ant-select-selection-item
+        width: 200px
+
+    .ant-modal-footer
+        margin-top: $gap !important
+
+.card-modal-top
+    &__title
+        $fz: 18px
+
+        font-size: $fz
+        font-weight: 700
+
+.priority
+    &__text
+        display: block
+        width: 100%
+
+.client
+    gap: calc( $gap / 2 )
+
+    &__name,
+    &__phone
+        width: 100%
+
+.car
+    gap: calc( $gap / 2 )
+
+    &__model,
+    &__number
+        width: 100%
+
+.responsible
+    gap: calc( $gap / 2 )
+
+    &__author,
+    &__executor
+        width: 100%
+
+.description
+    &__text
+        display: block
+        width: 100%
 
 .client-name,
 .client-phone
@@ -66,6 +105,7 @@
         display: block
         width: 100%
 
+.priority-text,
 .client-name-text,
 .client-phone-text,
 .car-model-text,
@@ -74,20 +114,13 @@
 .description-text
     padding: calc( $gap / 12 ) calc( $gap / 3 )
     border: 1px solid $inputGray
-    border-radius: $borderRadius
+    border-radius: calc( $borderRadius - 2px )
 
-.ant-modal-body
-    display: flex
-    flex-direction: column
-    gap: calc( $gap / 2 )
+.priority-text
+    text-transform: uppercase
 
-.ant-modal-title
-    $fz: 20px
-    font-size: $fz !important
-    font-weight: 700 !important
-
-.ant-select-selection-item
-    width: 200px
-
-.ant-modal-footer
-    margin-top: $gap !important
+.client-name-text
+    max-width: 228.5px
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis

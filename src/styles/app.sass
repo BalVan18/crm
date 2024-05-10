@@ -1,7 +1,7 @@
 @import-normalize
 @import "./variables.sass"
 
-//global
+// global
 *,
 *::before,
 *::after
@@ -36,7 +36,7 @@ a
 img
     display: block
 
-//app
+// app
 .header
     display: flex
     justify-content: space-between
@@ -54,7 +54,7 @@ img
         margin-right: calc( $gap - 5px )
 
 .header-user
-    border-radius: 6px
+    border-radius: $borderRadius
     cursor: pointer
     transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1)
 
@@ -70,7 +70,15 @@ img
 .ant-notification-notice-message
     margin-bottom: 0 !important
 
-//Tasks
+.btn
+    display: block
+    width: 140px
+    height: 40px
+    margin-left: auto
+    padding: 7px 15px
+    font-size: $fz
+
+// Tasks
 .tasks 
     display: flex
     flex-direction: column
@@ -81,8 +89,136 @@ img
         display: flex
         gap: calc( $gap / 2 )
 
-    &__btn
-        // margin-right: $gap
-
     &__search
         width: 200px
+
+    .ant-select-selector
+        width: 200px !important
+
+// Storage
+.storage
+    font-size: $fz
+
+    *
+        font-size: initial
+
+    &__top
+        margin-bottom: calc( $gap / 2 )
+
+    .ant-input-affix-wrapper
+        width: 200px
+
+.storage-list-item
+    $self: &
+
+    display: flex
+    justify-content: space-between
+    border-right: 1px solid $mainBlue
+    border-bottom: 1px solid $mainBlue
+    border-left: 1px solid $mainBlue
+    
+    &:first-of-type
+        border-top: 1px solid $mainBlue
+        border-top-right-radius: $borderRadius
+        border-top-left-radius: $borderRadius
+
+    &:last-of-type
+        border-bottom-right-radius: $borderRadius
+        border-bottom-left-radius: $borderRadius
+    
+    &--header
+        #{$self}__text
+            background-color: $mainBlue
+            color: $textWhite
+            text-align: center
+            font-weight: 700
+
+    &__text
+        padding: 5px 10px
+        width: 50%
+
+        &:not(:first-of-type)
+            border-left: 1px solid $mainBlue
+
+// Works 
+.works
+    font-size: $fz
+
+    *
+        font-size: initial
+
+    &__top
+        margin-bottom: calc( $gap / 2 )
+
+    .ant-input-affix-wrapper
+        width: 200px
+
+.works-table-row
+    display: flex
+    justify-content: space-between
+    border-right: 1px solid $mainBlue
+    border-bottom: 1px solid $mainBlue
+    border-left: 1px solid $mainBlue
+
+    &:last-of-type
+        border-bottom-right-radius: $borderRadius
+        border-bottom-left-radius: $borderRadius
+
+        .table-row-cell
+            &:last-of-type
+                border-bottom-right-radius: $borderRadius
+            
+            &:first-of-type
+                border-bottom-left-radius: $borderRadius
+
+    &--header
+        padding: 5px 10px
+        background-color: $mainBlue
+        border-top-right-radius: $borderRadius
+        border-top-left-radius: $borderRadius        
+            
+.works-table-row-cell
+    &__headding
+        width: 50%
+        text-align: center
+        font-weight: 700
+        color: $textWhite
+
+// Clients
+.clients
+    font-size: $fz
+
+    *
+        font-size: initial
+
+    &__top
+        margin-bottom: calc( $gap / 2 )
+
+    .ant-input-affix-wrapper
+        width: 200px
+
+.clients-list-item
+    $self: &
+
+    display: flex
+    justify-content: space-between
+    border-right: 1px solid $mainBlue
+    border-bottom: 1px solid $mainBlue
+    border-left: 1px solid $mainBlue
+    
+    &:first-of-type
+        border-top: 1px solid $mainBlue
+    
+    &--header
+        #{$self}__text
+            background-color: $mainBlue
+            text-align: center
+            font-weight: 700
+            color: $textWhite
+
+    &__text
+        padding: 5px 10px
+        width: 50%
+
+        &:not(:first-of-type)
+            border-left: 1px solid $mainBlue

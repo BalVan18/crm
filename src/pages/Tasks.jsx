@@ -1,10 +1,11 @@
+import { useState, useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux'
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Select, Input } from 'antd';
 import { showNewTaskModal } from '../store/newTaskModalSlice'
-import {useDispatch, useSelector} from 'react-redux'
+import { setRouterData } from '../store/routerSlice'
 
 import Board from "../components/Board/Board";
-import {useState, useCallback, useEffect} from "react";
 
 export default function Tasks() {
     const dispatch = useDispatch();
@@ -36,7 +37,8 @@ export default function Tasks() {
 
     useEffect(() => {
         setContent(tasks)
-    }, [tasks]);
+        dispatch(setRouterData("1"))
+    }, [tasks, dispatch]);
 
     return (
         <div className="tasks">

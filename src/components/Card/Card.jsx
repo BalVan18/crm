@@ -28,7 +28,7 @@ export default function Card({ task, index }) {
         if (client) setClientData(client)
     }, [task.executor_id, task.author_id, task.client_id, dataFromDb.employees, dataFromDb.clients]);
 
-    const modalData = [task.id, clientData.name, task.date, task.title, authorName, executorName, clientData.phone, task.description, clientData.model, clientData.number.toLowerCase(), task.status]
+    const modalData = [task.id, clientData.name, task.date, task.title, authorName, executorName, clientData.phone, task.description, clientData.model, clientData.number.toLowerCase(), task.status, task.priority]
 
     const classes = () => {
         if (task.priority === 'высокий') {
@@ -73,7 +73,7 @@ export default function Card({ task, index }) {
                                 {clientData.model}
                             </span>
                             <span className="client-car__number client-car-number">
-                                {clientData.number.toLowerCase()}
+                                {clientData.number}
                             </span>
                         </div>
                     </div>

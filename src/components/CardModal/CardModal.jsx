@@ -55,28 +55,41 @@ export default function CardModal() {
         updates[`tasks/task_${modalData.info.id}`] = updatedTask;
         update(ref(db), updates);
         dispatch(closeCardModal());
-
-        // TODO для Ванька вывести в этой мадолке дату и приоритет
     }
 
     return (
-        <Modal title={modalData.info.title} className='card-modal' open={modalData.visible} onCancel={() => dispatch(closeCardModal())} centered footer={null}>
-            <div className="card-modal__status card-modal-status status">
-                <h4 className="status__title status-title">Статус</h4>
-                <Select
-                    className="status__select status-select"
-                    onChange={handleChangeStatus}
-                    defaultValue={modalData.info.convertedStatus}
-                    key={modalData.info.convertedStatus}
-                    options={[
-                        { value: 1, label: 'НЕРАЗОБРАННЫЕ' },
-                        { value: 2, label: 'ЗАПИСЬ' },
-                        { value: 3, label: 'В РАБОТЕ' },
-                        { value: 4, label: 'ВЫПОЛНЕН' },
-                    ]}
-                />
+        <Modal className='card-modal' open={modalData.visible} onCancel={() => dispatch(closeCardModal())} centered footer={null}>
+            <div className="card-modal__top card-modal-top">
+                <span className="card-modal-top__title">
+                    {modalData.info.title}
+                </span>
+                <span>от</span>
+                <span className="card-modal-top__date">
+                    {modalData.info.date}
+                </span>
             </div>
-            <div className="card-modal__wrap">
+            <div className="card-modal__content card-modal-content">
+                <div className="card-modal__wrap card-modal-wrap">
+                    <div className="card-modal__status card-modal-status status">
+                        <h4 className="status__title status-title">Статус</h4>
+                        <Select
+                            className="status__select status-select"
+                            onChange={handleChangeStatus}
+                            defaultValue={modalData.info.convertedStatus}
+                            key={modalData.info.convertedStatus}
+                            options={[
+                                { value: 1, label: 'НЕРАЗОБРАННЫЕ' },
+                                { value: 2, label: 'ЗАПИСЬ' },
+                                { value: 3, label: 'В РАБОТЕ' },
+                                { value: 4, label: 'ВЫПОЛНЕН' },
+                            ]}
+                        />
+                    </div>
+                    <div className="card-modal__priority priority">
+                        <h4 className="priority__title priority-title">Приоритет</h4>
+                        <span className="priority__text priority-text">{modalData.info.priority}</span>
+                    </div>
+                </div>
                 <div className="card-modal__client card-modal-client client">
                     <div className='client__name client-name'>
                         <h4 className='client-name__title client-name-title'>Клиент</h4>
@@ -97,27 +110,27 @@ export default function CardModal() {
                         <span className='car-number__text car-number-text'>{modalData.info.number}</span>
                     </div>
                 </div>
-            </div>
-            <div className="card-modal__responsible card-modal-responsible responsible">
-                <div className="responsible__author responsible-author">
-                    <h4 className="responsible-author__title responsible-author-title">Автор</h4>
-                    <span className="responsible-author__text responsible-author-text">{modalData.info.author}</span>
+                <div className="card-modal__responsible card-modal-responsible responsible">
+                    <div className="responsible__author responsible-author">
+                        <h4 className="responsible-author__title responsible-author-title">Автор</h4>
+                        <span className="responsible-author__text responsible-author-text">{modalData.info.author}</span>
+                    </div>
+                    <div className="responsible__executor responsible-executor">
+                        <h4 className="responsible-executor__title responsible-executor-title">Исполнитель</h4>
+                        <Select
+                            className="responsible-executor__select responsible-executor-select"
+                            onChange={handleChangeExecutor}
+                            defaultValue={modalData.info.executor}
+                            options={dataFromDb.employees.map(executor => ({value: executor.full_name, label: executor.full_name}))}
+                        />
+                    </div>
                 </div>
-                <div className="responsible__executor responsible-executor">
-                    <h4 className="responsible-executor__title responsible-executor-title">Исполнитель</h4>
-                    <Select
-                        className="responsible-executor__select responsible-executor-select"
-                        onChange={handleChangeExecutor}
-                        defaultValue={modalData.info.executor}
-                        options={dataFromDb.employees.map(executor => ({value: executor.full_name, label: executor.full_name}))}
-                    />
+                <div className="card-modal__description card-modal-description description">
+                    <h4 className="description__title description-title">Причина обращения</h4>
+                    <span className='description__text description-text'>{modalData.info.description}</span>
                 </div>
+                <Button className="card-modal__btn btn" onClick={() => okHandler()} type="primary" size="large">Сохранить</Button>
             </div>
-            <div className="card-modal__description card-modal-description description">
-                <h4 className="description__title description-title">Причина обращения</h4>
-                <span className='description__text description-text'>{modalData.info.description}</span>
-            </div>
-            <Button className="card-modal__btn" onClick={() => okHandler()} type="primary" size="large">Сохранить</Button>
         </Modal >
     )
 }

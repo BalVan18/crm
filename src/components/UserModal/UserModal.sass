@@ -1,0 +1,24 @@
+@import '../../styles/variables.sass'
+
+.user-modal
+    font-size: $fz
+
+    *
+        font-size: initial
+
+    &__title
+        $fz: 18px
+        
+        margin-bottom: calc( $gap / 3 )
+        font-size: $fz
+
+    &__row
+        display: flex
+        align-items: flex-end
+        gap: calc( $gap / 6 )
+        margin-bottom: calc( $gap / 6 )
+
+        &:last-of-type
+            margin-bottom: calc( $gap / 2 )
+
+        

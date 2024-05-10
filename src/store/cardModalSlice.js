@@ -39,6 +39,7 @@ export const cardModalSlice = createSlice({
         number: action.payload[9],
         status: action.payload[10],
         convertedStatus: convertStatusToString(action.payload[10]),
+        priority: action.payload[11],
       }
     }),
 

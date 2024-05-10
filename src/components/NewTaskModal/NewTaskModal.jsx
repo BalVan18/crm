@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { closeNewTaskModal } from '../../store/newTaskModalSlice'
 import { getDatabase, ref, update } from "firebase/database";
 
+import "./NewTaskModal.sass";
+
 export default function CardModal() {
     const { TextArea } = Input;
 
@@ -43,6 +45,7 @@ export default function CardModal() {
             description: values.description,
             executor_id: values.executor,
             id: dataFromDb.tasks.length + 1,
+            priority: values.priority,
             status: 1,
             title: values.title,
         };
@@ -54,7 +57,7 @@ export default function CardModal() {
                 id: clientId,
                 model: values.clientCarModel,
                 name: values.clientName,
-                number: values.clientCarNumber,
+                number: values.clientCarNumber.toUpperCase(),
                 phone: values.clientPhone,
             }
 
@@ -66,44 +69,56 @@ export default function CardModal() {
 
     const validateMessages = {
         // eslint-disable-next-line no-template-curly-in-string
-        required: 'Заполните поле ${label}*',
+        required: 'Заполните поле ${label}!',
     };
 
     return (
-        <Modal title='Создать новую задачу' className='new-task-modal' open={newTaskModalState} onCancel={() => dispatch(closeNewTaskModal())} centered footer={null}>
+        <Modal className='new-task-modal' open={newTaskModalState} onCancel={() => dispatch(closeNewTaskModal())} centered footer={null}>
+            <h4 className="new-task-modal__title">Создать новую задачу</h4>
             <Form
                 validateMessages={validateMessages}
                 className="new-task-modal__form new-task-modal-form form"
                 layout="vertical"
                 onFinish={onFinish}
             >
-                <Form.Item className="form__item form-item" name="title" label="Номер задачи" rules={[{ required: true }]}>
+                <Form.Item className="form__item" name="title" label="Номер задачи" rules={[{ required: true }]}>
                     <Input placeholder="Введите номер задачи" />
                 </Form.Item>
-                <Form.Item className="form__item form-item" name="clientName" label="Клиент" rules={[{ required: true }]}>
+                <Form.Item className="form__item" name="priority" label="Приоритет" rules={[{ required: true }]}>
+                    <Select
+                        className="priority__select"
+                        placeholder="Выберите приоритет задачи"
+                        options={[
+                            { value: 'низкий', label: 'НИЗКИЙ' },
+                            { value: 'средний', label: 'СРЕДНИЙ' },
+                            { value: 'высокий', label: 'ВЫСОКИЙ' },
+                        ]}
+                    />
+                </Form.Item>
+                <Form.Item className="form__item" name="clientName" label="Клиент" rules={[{ required: true }]}>
                     <Input placeholder="Введите ФИО клиента" />
                 </Form.Item>
-                <Form.Item className="form__item form-item" name="clientPhone" label="Телефон" rules={[{ required: true }]}>
+                <Form.Item className="form__item" name="clientPhone" label="Телефон" rules={[{ required: true }]}>
                     <Input placeholder="Введите телефон клиента" />
                 </Form.Item>
-                <Form.Item className="form__item form-item" name="clientCarModel" label="Автомобиль" rules={[{ required: true }]}>
+                <Form.Item className="form__item" name="clientCarModel" label="Автомобиль" rules={[{ required: true }]}>
                     <Input placeholder="Введите автомобиль" />
                 </Form.Item>
-                <Form.Item className="form__item form-item" name="clientCarNumber" label="Гос. номер" rules={[{ required: true }]}>
+                <Form.Item className="form__item" name="clientCarNumber" label="Гос. номер" rules={[{ required: true }]}>
                     <Input placeholder="Введите номер автомобиля" />
                 </Form.Item>
-                <Form.Item className="form__item form-item" name="executor" label="Исполнитель" rules={[{ required: true }]}>
+                <Form.Item className="form__item" name="executor" label="Исполнитель" rules={[{ required: true }]}>
                     <Select
-                        className="status__select status-select"
-                        placeholder="Введите исполнителя"
+                        className="executor__select"
+                        placeholder="Выберите исполнителя"
                         options={dataFromDb.employees.map(executor => ({value: executor.id, label: executor.full_name}))}
                     />
                 </Form.Item>
-                <Form.Item className="form__item form-item" name="description" label="Причина обращения" rules={[{ required: true }]}>
-                    <TextArea autoSize placeholder="Введите причину обращенияы" />
+                <Form.Item className="form__item" name="description" label="Причина обращения" rules={[{ required: true }]}>
+                    <TextArea autoSize placeholder="Введите причину обращения" />
                 </Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Submit
+                <Button className='form__btn btn' type="primary" htmlType="submit">
+                    Создать
                 </Button>
             </Form>
         </Modal >
