@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { setRouterData } from '../store/routerSlice'
 import { getDatabase, ref, update } from "firebase/database";
-import { showNewWorkModal } from '../store/newWorkModalSlice'
+import { toggleNewWorkModal } from '../store/modalSlice'
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
 
@@ -39,7 +39,7 @@ export default function Works() {
     return (
         <div className='works'>
             <div className="works__top">
-                <Button className="tasks__btn tasks-btn" type="primary" size="large" icon={<PlusOutlined />} onClick={() => dispatch(showNewWorkModal())}/>
+                <Button className="tasks__btn tasks-btn" type="primary" size="large" icon={<PlusOutlined />} onClick={() => dispatch(toggleNewWorkModal())}/>
                 <Input className="works__search works-search" size="large" placeholder="Поиск" allowClear onChange={searchHandler} />
             </div>
             <div className="works-table works__table">

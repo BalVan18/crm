@@ -25,6 +25,12 @@ const initialState = {
     },
     user: {
       visible: false,
+    },
+    storageItem: {
+      visible: false,
+    },
+    work: {
+      visible: false,
     }
 }
 
@@ -72,9 +78,21 @@ export const modalSlice = createSlice({
         visible: !state.user.visible
       }
     }),
+    toggleNewStorageItemModal: (state) => ({
+      ...state,
+      storageItem: {
+        visible: !state.storageItem.visible
+      }
+    }),
+    toggleNewWorkModal: (state) => ({
+      ...state,
+      work: {
+        visible: !state.work.visible
+      }
+    }),
   },
 })
 
-export const { showCardModal, closeCardModal, toggleNewTaskModal, toggleUserModal } = modalSlice.actions
+export const { showCardModal, closeCardModal, toggleNewTaskModal, toggleUserModal, toggleNewStorageItemModal, toggleNewWorkModal } = modalSlice.actions
 
 export default modalSlice.reducer

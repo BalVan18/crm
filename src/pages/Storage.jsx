@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { setRouterData } from '../store/routerSlice'
 import { getDatabase, ref, update } from "firebase/database";
-import { showNewStorageItemModal } from '../store/newStorageItemModalSlice'
+import { toggleNewStorageItemModal } from '../store/modalSlice'
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
 
@@ -45,7 +45,7 @@ export default function Storage() {
     return (
         <div className='storage'>
             <div className="storage__top">
-                <Button className="tasks__btn tasks-btn" type="primary" size="large" icon={<PlusOutlined />} onClick={() => dispatch(showNewStorageItemModal())}/>
+                <Button className="tasks__btn tasks-btn" type="primary" size="large" icon={<PlusOutlined />} onClick={() => dispatch(toggleNewStorageItemModal())}/>
                 <Input className="storage__search storage-search" size="large" placeholder="Поиск" allowClear onChange={searchHandler} />
             </div>
             <ul className="storage-list storage__list">

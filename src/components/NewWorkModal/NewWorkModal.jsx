@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { closeNewWorkModal } from '../../store/newWorkModalSlice'
+import { toggleNewWorkModal } from '../../store/modalSlice'
 import { getDatabase, ref, update } from "firebase/database";
 import { Modal, Button, Form, Input } from 'antd';
 
@@ -8,7 +8,7 @@ import "./NewWorkModal.sass";
 export default function NewWorkModal() {
 
     const dispatch = useDispatch()
-    const newWorkModalState = useSelector((state) => state.newWorkModal.visible)
+    const newWorkModalState = useSelector((state) => state.modal.work.visible)
     const db = getDatabase();
     const dataFromDb = useSelector((state) => state.bd);
 
@@ -27,7 +27,7 @@ export default function NewWorkModal() {
         };
 
         pushWorkData(workData);
-        dispatch(closeNewWorkModal());
+        dispatch(toggleNewWorkModal());
     };
 
     const validateMessages = {
@@ -36,7 +36,7 @@ export default function NewWorkModal() {
     };
 
     return (
-        <Modal className='new-task-modal' open={newWorkModalState} onCancel={() => dispatch(closeNewWorkModal())} centered footer={null}>
+        <Modal className='new-task-modal' open={newWorkModalState} onCancel={() => dispatch(toggleNewWorkModal())} centered footer={null}>
             <h4 className="new-task-modal__title">Добавить новую работу</h4>
             <Form
                 validateMessages={validateMessages}

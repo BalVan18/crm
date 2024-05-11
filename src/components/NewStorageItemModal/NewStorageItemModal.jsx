@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { closeNewStorageItemModal } from '../../store/newStorageItemModalSlice'
+import { toggleNewStorageItemModal } from '../../store/modalSlice'
 import { getDatabase, ref, update } from "firebase/database";
 import { Modal, Button, Form, Input } from 'antd';
 
@@ -8,7 +8,7 @@ import "./NewStorageItemModal.sass";
 export default function NewStorageItemModal() {
 
     const dispatch = useDispatch()
-    const newStorageItemModalState = useSelector((state) => state.newStorageItemModal.visible)
+    const newStorageItemModalState = useSelector((state) => state.modal.storageItem.visible)
     const db = getDatabase();
     const dataFromDb = useSelector((state) => state.bd);
 
@@ -28,7 +28,7 @@ export default function NewStorageItemModal() {
         };
 
         pushStorageItemData(storageItemData);
-        dispatch(closeNewStorageItemModal());
+        dispatch(toggleNewStorageItemModal());
     };
 
     const validateMessages = {
@@ -37,7 +37,7 @@ export default function NewStorageItemModal() {
     };
 
     return (
-        <Modal className='new-task-modal' open={newStorageItemModalState} onCancel={() => dispatch(closeNewStorageItemModal())} centered footer={null}>
+        <Modal className='new-task-modal' open={newStorageItemModalState} onCancel={() => dispatch(toggleNewStorageItemModal())} centered footer={null}>
             <h4 className="new-task-modal__title">Добавить новую позицию</h4>
             <Form
                 validateMessages={validateMessages}
