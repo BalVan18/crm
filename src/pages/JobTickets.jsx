@@ -1,40 +1,45 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { setRouterData } from '../store/routerSlice'
-import { getDatabase, ref, update } from "firebase/database";
+// import { getDatabase } from "firebase/database";
 import { toggleNewWorkModal } from '../store/modalSlice'
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
 
 import RowCell from "../components/RowCell/RowCell.jsx"
 
-export default function Works() {
+export default function JobTickets() {
     const dispatch = useDispatch();
-    const works = useSelector((state) => state.bd.works)
-    const [content, setContent] = useState(works);
-    const db = getDatabase();
+    const jobTickets = useSelector((state) => state.bd.jobTickets)
+    const tasks = useSelector((state) => state.bd.tasks)
+    const clients = useSelector((state) => state.bd.clients)
+    const [content, setContent] = useState(jobTickets);
 
     const searchHandler = useCallback((e) => {
         const filterString = e.target.value
-        const filterContent = (e) => works.filter(el => el.name.toLowerCase().indexOf(filterString.toLowerCase()) > -1)
+        const filterContent = (e) => jobTickets.filter(el => el.name.toLowerCase().indexOf(filterString.toLowerCase()) > -1)
 
         if (filterString.length > 0) {
             setContent(filterContent(filterString).length > 0 ? filterContent(filterString) : [])
         } else {
-            setContent(works)
+            setContent(jobTickets)
         }
-    }, [works])
+    }, [jobTickets])
 
-    const updateDB = (workId, input) => {
-        update(ref(db, `works/work_${workId}`), {
-            cost: input
-        });
-    } 
+    // TODO Сделать вывод имени клиента в заказ-наряд
+    // const newContent = jobTickets.map(ticket => {
+    //     const filteredTasks = tasks.filter(task => task.id === ticket.task_id);
+    //     const clientId = filteredTasks.map(clientId => clientId.client_id);
+    //     const filteredClients = clients.filter(client => client.id === clientId)
+    //     console.log(filteredClients)
+    // })
+
+    // console.log(newContent)
 
     useEffect(() => {
-        setContent(works)
-        dispatch(setRouterData("4"))
-    }, [works, dispatch]);
+        setContent(jobTickets)
+        dispatch(setRouterData("2"))
+    }, [jobTickets, dispatch]);
 
     return (
         <div className='works'>
@@ -45,11 +50,13 @@ export default function Works() {
             <div className="works-table works__table">
                 <div className="works-table-row works-table-row--header">
                     <p className="works-table-row-cell__headding">Наименование</p>
-                    <p className="works-table-row-cell__headding">Стоимость</p>
+                    <p className="works-table-row-cell__headding">Дата</p>
+                    <p className="works-table-row-cell__headding">Заказчик</p>
+                    <p className="works-table-row-cell__headding">PDF</p>
                 </div>
-                {content.map((work, index) => (
+                {content.map((jobTickets, index) => (
                     <div className="works-table-row" key={index}>
-                        <RowCell data={work} page="works" updateDB={updateDB}/>
+                        <RowCell data={jobTickets} page="job-tickets" />
                     </div>
                 ))}
             </div>

@@ -5,10 +5,8 @@ const convertStatusToString = (statusID) => {
     case 1:
       return 'НЕРАЗОБРАННЫЕ'
     case 2:
-      return 'ЗАПИСЬ'
-    case 3:
       return 'В РАБОТЕ'
-    case 4:
+    case 3:
       return 'ВЫПОЛНЕН'
     default:
       break;

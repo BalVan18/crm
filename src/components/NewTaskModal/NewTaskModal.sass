@@ -1,12 +1,28 @@
 @import '../../styles/variables.sass'
 
 .new-task-modal
+    max-height: 800px
+
+    font-size: $fz
+
+    *
+        font-size: initial
+    
+
     &__title
         $fz: 18px
 
         margin-bottom: calc( $gap / 2 )
         font-size: $fz
         font-weight: 700
+
+    .ant-modal-body
+        max-height: 770px
+        overflow-y: auto
+        scrollbar-width: none
+
+        &::-webkit-scrollbar
+            display: none
 
     .ant-form-item
         margin-bottom: calc( $gap / 3 )

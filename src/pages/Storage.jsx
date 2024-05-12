@@ -39,7 +39,7 @@ export default function Storage() {
 
     useEffect(() => {
         setContent(storage)
-        dispatch(setRouterData("2"))
+        dispatch(setRouterData("3"))
     }, [storage, dispatch]);
 
     return (

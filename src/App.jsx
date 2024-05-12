@@ -7,13 +7,15 @@ import {
     ToolOutlined,
     UserOutlined,
     LineChartOutlined,
-    TeamOutlined
+    TeamOutlined,
+    AuditOutlined
 } from '@ant-design/icons';
 import { Routes, Route, Navigate, Link } from 'react-router-dom';
 import { Layout, Menu, Button, theme, notification, Avatar } from 'antd';
 import { getAuth } from "firebase/auth";
 
 import Tasks from './pages/Tasks';
+import JobTickets from './pages/JobTickets';
 import Storage from './pages/Storage';
 import Works from './pages/Works';
 import Clients from './pages/Clients';
@@ -29,7 +31,7 @@ import './styles/app.sass';
 
 import { toggleUserModal } from './store/modalSlice';
 import { setUserData } from './store/userSlice';
-import { setEmployees, setTasks, setClients, setWorks, setStorage } from './store/bdSlice';
+import { setEmployees, setTasks, setClients, setWorks, setStorage, setJobTickets } from './store/bdSlice';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {getDatabase, onValue, ref} from "firebase/database";
@@ -132,6 +134,18 @@ const App = () => {
                 dispatch(setStorage(storageArr))
             }
         });
+
+        const fetchJobTickets= ref(db, 'job_tickets/');
+        onValue(fetchJobTickets, (snapshot) => {
+            if (snapshot.exists()){
+                const data = snapshot.val();
+                let jobTicketsArr = [];
+                for (let item in data) {
+                    jobTicketsArr.push(data[item])
+                }
+                dispatch(setJobTickets(jobTicketsArr))
+            }
+        });
     }, [authorized, cachedOpenNotificationWithIcon, db, dispatch])
 
     useEffect(() => {
@@ -159,21 +173,26 @@ const App = () => {
                                 },
                                 {
                                     key: '2',
+                                    icon: <AuditOutlined />,
+                                    label: <Link to="/job-tickets">Заказ-наряды</Link>,
+                                },
+                                {
+                                    key: '3',
                                     icon: <HomeOutlined />,
                                     label: <Link to="/storage">Склад</Link>,
                                 },
                                 {
-                                    key: '3',
+                                    key: '4',
                                     icon: <ToolOutlined />,
                                     label: <Link to="/works">Работы</Link>,
                                 },
                                 {
-                                    key: '4',
+                                    key: '5',
                                     icon: <TeamOutlined />,
                                     label: <Link to="/clients">Клиенты</Link>,
                                 },
                                 {
-                                    key: '5',
+                                    key: '6',
                                     icon: <LineChartOutlined />,
                                     label: <Link to="/reports">Отчёты</Link>,
                                 },
@@ -209,6 +228,7 @@ const App = () => {
                         >
                             <Routes>
                                 <Route path="/" element={<Tasks />} />
+                                <Route path="/job-tickets" element={<JobTickets />} />
                                 <Route path="/storage" element={<Storage />} />
                                 <Route path="/works" element={<Works />} />
                                 <Route path="/clients" element={<Clients />} />

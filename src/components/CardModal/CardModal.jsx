@@ -79,9 +79,8 @@ export default function CardModal() {
                             key={modalData.info.convertedStatus}
                             options={[
                                 { value: 1, label: 'НЕРАЗОБРАННЫЕ' },
-                                { value: 2, label: 'ЗАПИСЬ' },
-                                { value: 3, label: 'В РАБОТЕ' },
-                                { value: 4, label: 'ВЫПОЛНЕН' },
+                                { value: 2, label: 'В РАБОТЕ' },
+                                { value: 3, label: 'ВЫПОЛНЕН' },
                             ]}
                         />
                     </div>

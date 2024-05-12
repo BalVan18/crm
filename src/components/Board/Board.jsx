@@ -8,7 +8,6 @@ import "./Board.sass"
 export default function Board({authorId, executorId, searchedContent}) {
     const db = getDatabase();
 
-    const [zapis, setZapis] = useState([]);
     const [incomplete, setIncomplete] = useState([]);
     const [completed, setCompleted] = useState([]);
     const [atWork, setAtWork] = useState([]);
@@ -16,24 +15,20 @@ export default function Board({authorId, executorId, searchedContent}) {
     useEffect(() => {
         if (authorId && executorId) {
             setIncomplete(searchedContent.filter(task => task.status === 1 && task.author_id === authorId  && task.executor_id === executorId))
-            setZapis(searchedContent.filter(task => task.status === 2 && task.author_id === authorId  && task.executor_id === executorId))
-            setCompleted(searchedContent.filter(task => task.status === 4 && task.author_id === authorId  && task.executor_id === executorId))
-            setAtWork(searchedContent.filter(task => task.status === 3 && task.author_id === authorId  && task.executor_id === executorId))
+            setAtWork(searchedContent.filter(task => task.status === 2 && task.author_id === authorId  && task.executor_id === executorId))
+            setCompleted(searchedContent.filter(task => task.status === 3 && task.author_id === authorId  && task.executor_id === executorId))
         } else if (authorId) {
             setIncomplete(searchedContent.filter(task => task.status === 1 && task.author_id === authorId))
-            setZapis(searchedContent.filter(task => task.status === 2 && task.author_id === authorId))
-            setCompleted(searchedContent.filter(task => task.status === 4 && task.author_id === authorId))
-            setAtWork(searchedContent.filter(task => task.status === 3 && task.author_id === authorId))
+            setAtWork(searchedContent.filter(task => task.status === 2 && task.author_id === authorId))
+            setCompleted(searchedContent.filter(task => task.status === 3 && task.author_id === authorId))
         } else if (executorId){
             setIncomplete(searchedContent.filter(task => task.status === 1 && task.executor_id === executorId))
-            setZapis(searchedContent.filter(task => task.status === 2 && task.executor_id === executorId))
-            setCompleted(searchedContent.filter(task => task.status === 4 && task.executor_id === executorId))
-            setAtWork(searchedContent.filter(task => task.status === 3 && task.executor_id === executorId))
+            setAtWork(searchedContent.filter(task => task.status === 2 && task.executor_id === executorId))
+            setCompleted(searchedContent.filter(task => task.status === 3 && task.executor_id === executorId))
         } else {
             setIncomplete(searchedContent.filter(task => task.status === 1))
-            setZapis(searchedContent.filter(task => task.status === 2))
-            setCompleted(searchedContent.filter(task => task.status === 4))
-            setAtWork(searchedContent.filter(task => task.status === 3))
+            setAtWork(searchedContent.filter(task => task.status === 2))
+            setCompleted(searchedContent.filter(task => task.status === 3))
         }
     }, [authorId, executorId, searchedContent]);
 
@@ -44,7 +39,7 @@ export default function Board({authorId, executorId, searchedContent}) {
 
         deletePreviousState(source.droppableId, draggableId);
 
-        const task = findItemById(draggableId, [...incomplete, ...zapis, ...atWork, ...completed]);
+        const task = findItemById(draggableId, [...incomplete, ...atWork, ...completed]);
 
         setNewState(destination.droppableId, task);
 
@@ -64,12 +59,9 @@ export default function Board({authorId, executorId, searchedContent}) {
                 setIncomplete(removeItemById(taskId, incomplete));
                 break;
             case "2":
-                setZapis(removeItemById(taskId, zapis));
-                break;
-            case "3":
                 setAtWork(removeItemById(taskId, atWork));
                 break;
-            case "4":
+            case "3":
                 setCompleted(removeItemById(taskId, completed));
                 break;
             default:
@@ -84,15 +76,11 @@ export default function Board({authorId, executorId, searchedContent}) {
                 updatedTask = { ...task, appointment: false };
                 setIncomplete([updatedTask, ...incomplete]);
                 break;
-            case "2":  // ЗАПИСЬ
-                updatedTask = { ...task, appointment: false };
-                setZapis([updatedTask, ...zapis]);
-                break;
-            case "3":  // В РАБОТЕ
+            case "2":  // В РАБОТЕ
                 updatedTask = { ...task, appointment: false };
                 setAtWork([updatedTask, ...atWork]);
                 break;
-            case "4":  // ВЫПОЛНЕН
+            case "3":  // ВЫПОЛНЕН
                 updatedTask = { ...task, appointment: false };
                 setCompleted([updatedTask, ...completed]);
                 break;
@@ -112,9 +100,8 @@ export default function Board({authorId, executorId, searchedContent}) {
         <DragDropContext className="board" onDragEnd={handleDragEnd}>
             <div className="board__container board-container">
                 <Column title={"Неразобранные"} tasks={incomplete} id={"1"} />
-                <Column title={"Запись"} tasks={zapis} id={"2"} />
-                <Column title={"В работе"} tasks={atWork} id={"3"} />
-                <Column title={"Выполнен"} tasks={completed} id={"4"} />
+                <Column title={"В работе"} tasks={atWork} id={"2"} />
+                <Column title={"Выполнен"} tasks={completed} id={"3"} />
             </div>
         </DragDropContext>
     );

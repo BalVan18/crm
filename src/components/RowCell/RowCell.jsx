@@ -1,4 +1,7 @@
 import { EditOutlined, CheckOutlined } from '@ant-design/icons';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+
+import JobTicketPDF from "../JobTicketPDF/JobTicketPDF"
 
 import "./RowCell.sass"
 
@@ -7,6 +10,22 @@ export default function RowCell({ data, page, updateDB, updateCostDB, updateCoun
     let cellData = {}
 
     switch (page) {
+        case "job-tickets":
+            cellData = {
+                content: () => {
+                    return (<>
+                        <p className="table-row-cell">{data.title}</p>
+                        <p className="table-row-cell">{data.date}</p>
+                        <p className="table-row-cell">{data.client}</p>
+                        <p className="table-row-cell">
+                            <PDFDownloadLink document={<JobTicketPDF />} fileName="somename.pdf">
+                                {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}
+                            </PDFDownloadLink>
+                        </p>
+                    </>)
+                }
+            }
+            break;
         case "storage":
             cellData = {
                 content: () => {

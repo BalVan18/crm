@@ -6,6 +6,7 @@ const initialState = {
     tasks: [],
     works: [],
     storage: [],
+    jobTickets: [],
 }
 
 export const bdSlice = createSlice({
@@ -31,10 +32,14 @@ export const bdSlice = createSlice({
         setStorage: (state, action) => ({
             ...state,
             storage: action.payload  
+        }),
+        setJobTickets: (state, action) => ({
+            ...state,
+            jobTickets: action.payload  
         })
     }
 })
 
-export const { setEmployees, setClients, setTasks, setWorks, setStorage } = bdSlice.actions
+export const { setEmployees, setClients, setTasks, setWorks, setStorage, setJobTickets } = bdSlice.actions
 
 export default bdSlice.reducer
