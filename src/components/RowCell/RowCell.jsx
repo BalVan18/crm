@@ -5,7 +5,7 @@ import JobTicketPDF from "../JobTicketPDF/JobTicketPDF"
 
 import "./RowCell.sass"
 
-export default function RowCell({ data, page, updateDB, updateCostDB, updateCountDB, storageFromBD }) {
+export default function RowCell({ data, page, updateDB, updateCostDB, updateCountDB, storageFromBD, worksFromDb }) {
 
     let cellData = {}
 
@@ -19,9 +19,9 @@ export default function RowCell({ data, page, updateDB, updateCostDB, updateCoun
                         <p className="table-row-cell">{data.clientName}</p>
                         <p className="table-row-cell">
                             <PDFViewer>
-                                <JobTicketPDF data={data} storageFromBD={storageFromBD}/>
+                                <JobTicketPDF data={data} storageFromBD={storageFromBD} worksFromDb={worksFromDb} />
                             </PDFViewer>
-                            <PDFDownloadLink document={<JobTicketPDF data={data} storageFromBD={storageFromBD}/>} fileName="заказ-наряд.pdf">
+                            <PDFDownloadLink document={<JobTicketPDF data={data} storageFromBD={storageFromBD} worksFromDb={worksFromDb} />} fileName="заказ-наряд.pdf">
                                 {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}
                             </PDFDownloadLink>
                         </p>
@@ -100,7 +100,7 @@ export default function RowCell({ data, page, updateDB, updateCostDB, updateCoun
                 }
             }
             break;
-    
+
         default:
             break;
     }
@@ -145,7 +145,7 @@ export default function RowCell({ data, page, updateDB, updateCostDB, updateCoun
 
     return (
         <>
-           {cellData.content()} 
+           {cellData.content()}
         </>
     )
 }

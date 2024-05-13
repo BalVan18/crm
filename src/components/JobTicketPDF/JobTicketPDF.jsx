@@ -1,7 +1,7 @@
 import React from 'react';
 import {Page, Text, View, Document, StyleSheet, Font} from '@react-pdf/renderer';
 
-export default function JobTicketPDF({data, storageFromBD}) {
+export default function JobTicketPDF({data, storageFromBD, worksFromDb}) {
     Font.register({
         family: "Roboto",
         src: "https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-medium-webfont.ttf"
@@ -17,7 +17,8 @@ export default function JobTicketPDF({data, storageFromBD}) {
             display: 'flex',
             flexDirection: 'column',
             backgroundColor: '#FFF',
-            fontFamily : "Roboto"
+            fontFamily : "Roboto",
+            fontSize: '14px',
         },
         section: {
             display: 'flex',
@@ -43,14 +44,12 @@ export default function JobTicketPDF({data, storageFromBD}) {
             flexDirection: 'row',
             borderLeft: '1px solid #000',
             borderRight: '1px solid #000',
-            borderTop: '1px solid #000',
+            borderBottom: '1px solid #000',
             marginLeft: 10,
             marginRight: 10,
         },
-        lastTableRow: {
-            borderBottom: '1px solid #000',
-        },
         tableHeader: {
+            borderTop: '1px solid #000',
             textAlign: "center",
             fontFamily: "RobotoBold"
         },
@@ -63,35 +62,48 @@ export default function JobTicketPDF({data, storageFromBD}) {
             overflow: "hidden",
             fontSize: '12px',
         },
-        tableHeaderCol2: {
+        worksTableHeaderCol2: {
+            width: '60%',
+        },
+        worksTableCol3: {
+            width: '32%',
+        },
+        worksTableCol2: {
+            width: '60%',
+            textAlign: "left",
+        },
+        storageTableHeaderCol2: {
             width: '45%',
         },
         tableCol1: {
             width: '8%'
         },
-        tableCol2: {
+        storageTableCol2: {
             width: '45%',
             textAlign: "left",
         },
-        tableCol3: {
+        storageTableCol3: {
             width: '19%',
         },
-        tableCol4: {
+        storageTableCol4: {
             width: '14%'
         },
-        tableCol5: {
+        storageTableCol5: {
             width: '14%',
             borderRight: 'none',
         },
-
     });
-    let tableContent = [],
-        tableSum;
 
-    const storage = data.storage;
+    let storageTableContent = [],
+        storageTableSum,
+        worksTableContent = [],
+        worksTableSum,
+        totalSum;
 
-    if (Array.isArray(storage)) {
-        tableContent = storage.map(storageItem => {
+    const {storage, works} = data;
+
+    if (Array.isArray(storage) && Array.isArray(works)) {
+        storageTableContent = storage.map(storageItem => {
             const currentStorageItem = storageFromBD.filter(item => item.id === storageItem.item_id)[0];
 
             return {
@@ -102,9 +114,24 @@ export default function JobTicketPDF({data, storageFromBD}) {
             }
         })
 
-        tableSum = tableContent.reduce((acc, item) => {
+        storageTableSum = storageTableContent.reduce((acc, item) => {
             return acc + item.sum
         }, 0)
+
+        worksTableContent = works.map(work => {
+            const currentWork = worksFromDb.filter(currWork => currWork.id === work)[0];
+
+            return {
+                name: currentWork.name,
+                cost: currentWork.cost,
+            }
+        })
+
+        worksTableSum = worksTableContent.reduce((acc, item) => {
+            return acc + Number(item.cost)
+        }, 0)
+
+        totalSum = worksTableSum + storageTableSum;
     }
 
 
@@ -122,27 +149,51 @@ export default function JobTicketPDF({data, storageFromBD}) {
                     <Text>исполнитель: {data.executorName}</Text>
                 </View>
 
+
                 <View style={[styles.tableRow, styles.tableHeader]}>
                     <Text style={[styles.tableCell, styles.tableCol1]}></Text>
-                    <Text style={[styles.tableCell, styles.tableHeaderCol2]}>Наименование</Text>
-                    <Text style={[styles.tableCell, styles.tableCol3]}>Колличество</Text>
-                    <Text style={[styles.tableCell, styles.tableCol4]}>Цена</Text>
-                    <Text style={[styles.tableCell, styles.tableCol5]}>Сумма</Text>
+                    <Text style={[styles.tableCell, styles.worksTableHeaderCol2]}>Наименование</Text>
+                    <Text style={[styles.tableCell, styles.worksTableCol3]}>Цена</Text>
                 </View>
-                {tableContent.map((el, index) => {
+                {worksTableContent.map((el, index) => {
                     return (
-                        <View key={index} style={[styles.tableRow, styles.lastTableRow]}>
+                        <View key={index} style={[styles.tableRow]}>
                             <Text style={[styles.tableCell, styles.tableCol1]}>№{index + 1}</Text>
-                            <Text style={[styles.tableCell, styles.tableCol2]}>{el.name}</Text>
-                            <Text style={[styles.tableCell, styles.tableCol3]}>{el.count} шт.</Text>
-                            <Text style={[styles.tableCell, styles.tableCol4]}>{el.cost} руб.</Text>
-                            <Text style={[styles.tableCell, styles.tableCol5]}>{el.sum} руб.</Text>
+                            <Text style={[styles.tableCell, styles.worksTableCol2]}>{el.name}</Text>
+                            <Text style={[styles.tableCell, styles.worksTableCol3]}>{el.cost} руб.</Text>
                         </View>
                     )
                 })}
+                <View style={[styles.section, styles.section5]}>
+                    <Text>Итого за работы: {worksTableSum} руб.</Text>
+                </View>
+
+
+                <View style={[styles.tableRow, styles.tableHeader]}>
+                    <Text style={[styles.tableCell, styles.tableCol1]}></Text>
+                    <Text style={[styles.tableCell, styles.storageTableHeaderCol2]}>Наименование</Text>
+                    <Text style={[styles.tableCell, styles.storageTableCol3]}>Колличество</Text>
+                    <Text style={[styles.tableCell, styles.storageTableCol4]}>Цена</Text>
+                    <Text style={[styles.tableCell, styles.storageTableCol5]}>Сумма</Text>
+                </View>
+                {storageTableContent.map((el, index) => {
+                    return (
+                        <View key={index} style={[styles.tableRow]}>
+                            <Text style={[styles.tableCell, styles.tableCol1]}>№{index + 1}</Text>
+                            <Text style={[styles.tableCell, styles.storageTableCol2]}>{el.name}</Text>
+                            <Text style={[styles.tableCell, styles.storageTableCol3]}>{el.count} шт.</Text>
+                            <Text style={[styles.tableCell, styles.storageTableCol4]}>{el.cost} руб.</Text>
+                            <Text style={[styles.tableCell, styles.storageTableCol5]}>{el.sum} руб.</Text>
+                        </View>
+                    )
+                })}
+                <View style={[styles.section, styles.section5]}>
+                    <Text>Итого за материалы: {storageTableSum} руб.</Text>
+                </View>
+
 
                 <View style={[styles.section, styles.section5]}>
-                    <Text>Итого: {tableSum} руб.</Text>
+                    <Text>Общий итог: {totalSum} руб.</Text>
                 </View>
 
                 <View style={[styles.section, styles.section5]}>

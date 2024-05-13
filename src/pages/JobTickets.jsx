@@ -15,6 +15,7 @@ export default function JobTickets() {
     const clients = useSelector((state) => state.bd.clients)
     const employees = useSelector((state) => state.bd.employees)
     const storageFromBD = useSelector((state) => state.bd.storage)
+    const worksFromDb = useSelector((state) => state.bd.works)
     const [content, setContent] = useState(jobTickets);
 
     const searchHandler = useCallback((e) => {
@@ -36,6 +37,12 @@ export default function JobTickets() {
             const client = clients.filter(client => client.id === clientId)[0];
             const executor = employees.filter(employee => employee.id === executorId)[0];
             const storage = ticket.storage;
+            const works = ticket.works;
+
+            let worksArr = []
+            for (const work in works) {
+                worksArr.push(works[work])
+            }
 
             let storageArr = []
             for (const storageItem in storage) {
@@ -47,6 +54,7 @@ export default function JobTickets() {
                 clientName: client.name,
                 executorName: executor.full_name,
                 storage: storageArr,
+                works: worksArr,
             }
         })
 
@@ -69,7 +77,7 @@ export default function JobTickets() {
                 </div>
                 {content.map((jobTicket, index) => (
                     <div className="works-table-row" key={index}>
-                        <RowCell data={jobTicket} storageFromBD={storageFromBD} page="job-tickets" />
+                        <RowCell data={jobTicket} storageFromBD={storageFromBD} worksFromDb={worksFromDb} page="job-tickets" />
                     </div>
                 ))}
             </div>
