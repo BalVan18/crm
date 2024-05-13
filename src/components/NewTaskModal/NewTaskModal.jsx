@@ -35,6 +35,7 @@ export default function CardModal() {
     }
 
     const onFinish = (values) => {
+        console.log(values)
         let date = new Date().toLocaleString();
 
         let storageItems = values.storageItem

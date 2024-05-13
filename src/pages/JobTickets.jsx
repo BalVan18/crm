@@ -13,6 +13,8 @@ export default function JobTickets() {
     const jobTickets = useSelector((state) => state.bd.jobTickets)
     const tasks = useSelector((state) => state.bd.tasks)
     const clients = useSelector((state) => state.bd.clients)
+    const employees = useSelector((state) => state.bd.employees)
+    const storageFromBD = useSelector((state) => state.bd.storage)
     const [content, setContent] = useState(jobTickets);
 
     const searchHandler = useCallback((e) => {
@@ -26,20 +28,31 @@ export default function JobTickets() {
         }
     }, [jobTickets])
 
-    // TODO Сделать вывод имени клиента в заказ-наряд
-    // const newContent = jobTickets.map(ticket => {
-    //     const filteredTasks = tasks.filter(task => task.id === ticket.task_id);
-    //     const clientId = filteredTasks.map(clientId => clientId.client_id);
-    //     const filteredClients = clients.filter(client => client.id === clientId)
-    //     console.log(filteredClients)
-    // })
-
-    // console.log(newContent)
-
     useEffect(() => {
-        setContent(jobTickets)
+        const newContent = jobTickets.map(ticket => {
+            const relatedTask = tasks.filter(task => task.id === ticket.task_id)[0];
+            const clientId = relatedTask.client_id;
+            const executorId = relatedTask.executor_id;
+            const client = clients.filter(client => client.id === clientId)[0];
+            const executor = employees.filter(employee => employee.id === executorId)[0];
+            const storage = ticket.storage;
+
+            let storageArr = []
+            for (const storageItem in storage) {
+                storageArr.push(storage[storageItem])
+            }
+
+            return {
+                ...ticket,
+                clientName: client.name,
+                executorName: executor.full_name,
+                storage: storageArr,
+            }
+        })
+
+        setContent(newContent)
         dispatch(setRouterData("2"))
-    }, [jobTickets, dispatch]);
+    }, [jobTickets, dispatch, clients, tasks, employees]);
 
     return (
         <div className='works'>
@@ -54,9 +67,9 @@ export default function JobTickets() {
                     <p className="works-table-row-cell__headding">Заказчик</p>
                     <p className="works-table-row-cell__headding">PDF</p>
                 </div>
-                {content.map((jobTickets, index) => (
+                {content.map((jobTicket, index) => (
                     <div className="works-table-row" key={index}>
-                        <RowCell data={jobTickets} page="job-tickets" />
+                        <RowCell data={jobTicket} storageFromBD={storageFromBD} page="job-tickets" />
                     </div>
                 ))}
             </div>

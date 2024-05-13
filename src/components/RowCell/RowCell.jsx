@@ -1,11 +1,11 @@
 import { EditOutlined, CheckOutlined } from '@ant-design/icons';
-import { PDFDownloadLink } from '@react-pdf/renderer';
+import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 
 import JobTicketPDF from "../JobTicketPDF/JobTicketPDF"
 
 import "./RowCell.sass"
 
-export default function RowCell({ data, page, updateDB, updateCostDB, updateCountDB }) {
+export default function RowCell({ data, page, updateDB, updateCostDB, updateCountDB, storageFromBD }) {
 
     let cellData = {}
 
@@ -16,9 +16,12 @@ export default function RowCell({ data, page, updateDB, updateCostDB, updateCoun
                     return (<>
                         <p className="table-row-cell">{data.title}</p>
                         <p className="table-row-cell">{data.date}</p>
-                        <p className="table-row-cell">{data.client}</p>
+                        <p className="table-row-cell">{data.clientName}</p>
                         <p className="table-row-cell">
-                            <PDFDownloadLink document={<JobTicketPDF />} fileName="somename.pdf">
+                            <PDFViewer>
+                                <JobTicketPDF data={data} storageFromBD={storageFromBD}/>
+                            </PDFViewer>
+                            <PDFDownloadLink document={<JobTicketPDF data={data} storageFromBD={storageFromBD}/>} fileName="заказ-наряд.pdf">
                                 {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}
                             </PDFDownloadLink>
                         </p>
