@@ -20,7 +20,7 @@ export default function JobTickets() {
 
     const searchHandler = useCallback((e) => {
         const filterString = e.target.value
-        const filterContent = (e) => jobTickets.filter(el => el.name.toLowerCase().indexOf(filterString.toLowerCase()) > -1)
+        const filterContent = (e) => jobTickets.filter(el => el.title.toLowerCase().indexOf(filterString.toLowerCase()) > -1)
 
         if (filterString.length > 0) {
             setContent(filterContent(filterString).length > 0 ? filterContent(filterString) : [])
