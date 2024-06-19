@@ -44,13 +44,16 @@ export default function Storage() {
         dispatch(setRouterData("3"))
     }, [storage, dispatch]);
 
-    console.log(storage.map(item => item.name))
-
     return (
         <div className='storage'>
             <div className="storage__top">
                 <Button className="tasks__btn tasks-btn" type="primary" size="large" icon={<PlusOutlined />} onClick={() => dispatch(toggleNewStorageItemModal())}/>
                 <Input className="storage__search storage-search" size="large" placeholder="Поиск" allowClear onChange={searchHandler} />
+                <Button className="tasks__btn tasks-btn" type="primary" size="large">
+                    <PDFDownloadLink document={<StoragePDF data={storage}/>} fileName="Остатки-на-складе.pdf">
+                        {({ blob, url, loading, error }) => (loading ? 'Загрузить отчёт' : 'Загрузить отчёт')}
+                    </PDFDownloadLink>
+                </Button>
             </div>
             <ul className="storage-list storage__list">
                 <li className="storage-list-item storage-list-item--header">
@@ -64,10 +67,6 @@ export default function Storage() {
                     </li>
                 ))}
             </ul>
-
-            <PDFDownloadLink document={<StoragePDF data={storage}/>} fileName="Остатки-на-складе.pdf">
-                {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}
-            </PDFDownloadLink>
         </div>
     )
 }

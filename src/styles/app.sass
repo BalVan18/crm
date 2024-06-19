@@ -103,6 +103,9 @@ img
         font-size: initial
 
     &__top
+        display: flex
+        align-items: center
+        gap: calc( $gap / 2 )
         margin-bottom: calc( $gap / 2 )
 
     .ant-input-affix-wrapper
@@ -148,6 +151,9 @@ img
         font-size: initial
 
     &__top
+        display: flex
+        align-items: center
+        gap: calc( $gap / 2 )
         margin-bottom: calc( $gap / 2 )
 
     .ant-input-affix-wrapper
@@ -222,3 +228,44 @@ img
 
         &:not(:first-of-type)
             border-left: 1px solid $mainBlue
+
+// Reports
+
+.reports
+    font-size: $fz
+
+    &__title
+        text-align: center
+        font-size: 20px
+        margin-bottom: calc( $gap / 2 )
+
+    &__diagram
+        display: flex
+        flex-direction: row-reverse
+        justify-content: flex-end
+        align-items: center
+        gap: $gap
+
+    &__wrap
+        display: flex
+        flex-direction: column
+        gap: calc( $gap / 2 )
+
+    &__row
+        display: flex
+        gap: calc( $gap / 3 )
+        
+    &__color
+        width: 16px
+        height: 16px
+        border-radius: 10%
+        
+        &--first
+            background-color: #0bb4ff
+            
+        &--second
+            background-color: #50e991
+
+    &__piechart
+        width: 400px
+        height: 400px

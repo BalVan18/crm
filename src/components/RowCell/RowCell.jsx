@@ -19,7 +19,7 @@ export default function RowCell({ data, page, updateDB, updateCostDB, updateCoun
                         <p className="table-row-cell">{data.clientName}</p>
                         <p className="table-row-cell">
                             <PDFDownloadLink document={<JobTicketPDF data={data} storageFromBD={storageFromBD} worksFromDb={worksFromDb} />} fileName="заказ-наряд.pdf">
-                                {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}
+                                {({ blob, url, loading, error }) => (loading ? 'Загрузка...' : 'Загрузить')}
                             </PDFDownloadLink>
                         </p>
                     </>)

@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import { setRouterData } from '../store/routerSlice'
-import { Col, Row } from 'antd';
 import { PieChart } from 'react-minimal-pie-chart';
 
 export default function Reports() {
@@ -69,20 +68,28 @@ export default function Reports() {
     })
 
     return (
-        <>
-            <Row gutter={16}>
-                <Col span={12}>
-                    <p>Прибыль за детали: {materialsSum}</p>
-                    <p>Прибыль за работы: {worksSum}</p>
-                    <p>итог: {materialsSum + worksSum}</p>
-                    <PieChart
-                        data={[
-                            { title: 'Детали', value: materialsSum, color: '#E38627' },
-                            { title: 'Работы', value: worksSum, color: '#C13C37' },
-                        ]}
-                    />
-                </Col>
-            </Row>
-        </>
+        <div className="reports">
+            <h3 className="reports__title">Отчёт о прибыли за текущий месяц</h3>
+            <div className="reports__diagram">
+                <div className="reports__wrap">
+                    <div className="reports__row">
+                        <span className="reports__color reports__color--first"></span>
+                        <p className="reports__text">Прибыль за детали: {materialsSum} руб.</p>
+                    </div>
+                    <div className="reports__row">
+                        <span className="reports__color reports__color--second"></span>
+                        <p className="reports__text">Прибыль за работы: {worksSum} руб.</p>
+                    </div>
+                    <p className="reports__text">Итог: {materialsSum + worksSum} руб.</p>
+                </div>
+                <PieChart
+                    className="reports__piechart"
+                    data={[
+                        {title: 'Детали', value: materialsSum, color: '#0bb4ff'},
+                        {title: 'Работы', value: worksSum, color: '#50e991'},
+                    ]}
+                />
+            </div>
+        </div>
     )
 }
