@@ -7,6 +7,8 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
 
 import RowCell from "../components/RowCell/RowCell.jsx"
+import {PDFDownloadLink} from "@react-pdf/renderer";
+import StoragePDF from "../components/StoragePDF/StoragePDF";
 
 export default function Storage() {
     const dispatch = useDispatch();
@@ -29,7 +31,7 @@ export default function Storage() {
         update(ref(db, `storage/item_${id}`), {
             cost: inputCost
         });
-    } 
+    }
 
     const updateCountDB = (id, inputCount) => {
         update(ref(db, `storage/item_${id}`), {
@@ -41,6 +43,8 @@ export default function Storage() {
         setContent(storage)
         dispatch(setRouterData("3"))
     }, [storage, dispatch]);
+
+    console.log(storage.map(item => item.name))
 
     return (
         <div className='storage'>
@@ -60,6 +64,10 @@ export default function Storage() {
                     </li>
                 ))}
             </ul>
+
+            <PDFDownloadLink document={<StoragePDF data={storage}/>} fileName="Остатки-на-складе.pdf">
+                {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}
+            </PDFDownloadLink>
         </div>
     )
 }
